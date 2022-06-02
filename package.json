@@ -1,0 +1,26 @@
+{
+  "name": "capstone",
+  "version": "1.0.0",
+  "description": "Gary Carmen Eric",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js",
+    "dev": "PORT=5001 nodemon index.js",
+    "heroku-postbuild": "cd client && npm install && npm run build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/TryHarder3l33t/capstone.git"
+  },
+  "author": "Gary Carmen Eric",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/TryHarder3l33t/capstone/issues"
+  },
+  "homepage": "https://github.com/TryHarder3l33t/capstone#readme",
+  "dependencies": {
+    "express": "^4.18.1",
+    "nodemon": "^2.0.16"
+  }
+}
