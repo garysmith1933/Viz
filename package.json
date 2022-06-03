@@ -21,6 +21,7 @@
   "homepage": "https://github.com/TryHarder3l33t/capstone#readme",
   "dependencies": {
     "express": "^4.18.1",
-    "nodemon": "^2.0.16"
+    "nodemon": "^2.0.16",
+    "react-p5": "^1.3.30"
   }
 }
