@@ -3,7 +3,7 @@ const path = require('path');
 const app = express();
 
 //configure port in package.json
-const PORT = process.env.PORT;
+const PORT = process.env.PORT || 8080;
 
 //needed for heroku deploy
 app.use(express.static(path.join(__dirname, 'client/build')));
