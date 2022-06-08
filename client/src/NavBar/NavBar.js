@@ -12,8 +12,9 @@ import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
+import { Link } from 'react-router-dom';
 
-const pages = ['What', 'Pages', 'You', 'Guys', 'Want'];
+const pages = ['What', 'Pages', 'You', 'Guys', 'Want', 'Upload'];
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 
 const NavBar = () => {
@@ -120,7 +121,8 @@ const NavBar = () => {
                 onClick={handleCloseNavMenu}
                 sx={{ my: 2, color: 'white', display: 'block' }}
               >
-                {page}
+                {/* {page} */}
+                <Link to={page}>{page}</Link>
               </Button>
             ))}
           </Box>
