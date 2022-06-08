@@ -2,13 +2,15 @@ import React, { useState, useEffect } from 'react'
 import Sketch from 'react-p5';
 import 'p5/lib/addons/p5.sound';
 
+//I was playing around with the look of the visualizer. Feel free to mess around with this yourselves. 
+
 let currentSound;
 let fft;
-let FFT
+let angle = 0
 
 // react-p5 has this so we can use p5 methods outside of draw, and set up.
   const myp5 = new window.p5()
-   //to get access to the function on line 18, I need to get the prototype of this instance of P5 constructor
+   //to get access to the fft function in setup, I need to get the prototype of this instance of P5 constructor
   const P5 = Object.getPrototypeOf(myp5).constructor
  
 
@@ -17,18 +19,14 @@ const Visualizer = () => {
   
   //function that is passed to the sketch component as a prop
   const setup = (p, canvasParentRef) => {
-    console.log(p)
     p.createCanvas(p.windowWidth, p.windowHeight).parent(canvasParentRef)
     fft = new P5.FFT()
-  console.log(Object.getPrototypeOf(fft))
-  
   }
   
     //function that is passed to the sketch component as a prop
   const draw = (p) => {
-    p.background(255, 130, 20)
+    p.background("#243A73")
 
-    
     const pieces = 50;
     
      // Circle's radius
@@ -38,25 +36,29 @@ const Visualizer = () => {
   p.translate( p.width/2, p.height/2 );
 
   // The centered circle
-  p.stroke( 0, 0, 255 );
+  p.stroke('#37E2D5');
   p.ellipse( 0, 0, radius );
 
+  //may keep this commented out for now -GS
+
   // For each piece draw a line
-  for( let i = 0; i < pieces; i++ ) {
+  // for( let i = 0; i < pieces; i++ ) {
+  //   // Rotate the point of origin
+  //   p.rotate( p.TWO_PI / pieces );
     
-    // Rotate the point of origin
-    p.rotate( p.TWO_PI / pieces );
-    
-    // Draw the red lines
-    p.stroke( 255, 0, 0 );
-    p.line( 10, radius/2, 0, radius );
-    
-    //Optionally also draw to the opposite direction
-    p.stroke( 0 );
-    p.line( -10, radius/2, 0, radius ); 
-  }
+  //   // Draw the red lines
+  //       p.push()
+  //   p.stroke('white');
+  //   p.rotate(angle)
+  //   p.line( 10, radius/2, 0, 140 );
+
+  //   // p.stroke( 0 );
+  //   // p.line( -10, radius/2, 0, 140 ); 
+  //   p.pop()
+  // }
+  angle -= p.radians(0.3)
   
-    // Run the FFT analysis
+    // This is what catches the pitches
   fft.analyze();
 
   // Get the volumes of different frequency ranges
@@ -71,17 +73,29 @@ const Visualizer = () => {
 
   
   for( let i = 0; i < pieces; i++ ) {
-    
     p.rotate( p.TWO_PI / pieces );
     
+    //sets color for bass line - This is currently yellow.
+    p.stroke("#FBCB0A");
     // Draw the bass lines
-    p.line( mapBass, radius/2, 0, radius );
-    
-    // Draw the mid lines
-    p.line( mapMid, radius/2, 0, radius );    
+    p.line( mapBass, radius/2, 0, radius )
+  
+   
+    p.push()
+    //sets the color for mid lines - This is currently blue
+    p.stroke('#37E2D5');
+    p.rotate(angle)
+     // Draw the mid lines
+    p.line( mapMid, 300, 0, radius );
+    p.line( -mapMid, 300, 0, radius );   
+    p.pop()
 
+    // angle += p.radians(0.3)
+
+    //sets the color for treble lines - This is currently yellow
+    p.stroke("#C70A80");
     // Draw the treble lines
-    p.line( mapTreble, radius/2, 0, radius );        
+    p.line( mapTreble, 1, 0, 140 );        
     
     }
   }
@@ -103,7 +117,6 @@ const Visualizer = () => {
      if (currentSound.isPlaying()) {
        if(currentSound) {
         currentSound.pause()
-        console.log(currentSound.currentTime())
        }
       
        }
