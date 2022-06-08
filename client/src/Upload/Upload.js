@@ -15,6 +15,7 @@ const Upload = () => {
   const handleSubmit = async (ev) => {
     ev.preventDefault();
     const file = imageInput.files[0];
+    console.log('This is the file' + { file });
     //Send from front end to server backend. Backend sends back url
     const { data } = await axios.get('/api/s3url');
     const configuration = {
