@@ -1,13 +1,14 @@
-import React from 'react'
-import Visualizer from './Visualizer'
+import React from 'react';
+import NavBar from './NavBar/NavBar';
+import Routing from './Routing';
 
-  function App() {
+function App() {
   return (
     <>
-    <Visualizer/>
+      <NavBar />
+      <Routing />
     </>
-    )
-  
+  );
 }
 
-export default App
+export default App;
