@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "nodemon index.js",
-    "dev": "PORT=8080 nodemon index.js",
+    "dev": "PORT=8080 nodemon index.js  ",
     "heroku-postbuild": "cd client && npm install && npm run build"
   },
   "repository": {
@@ -20,6 +20,8 @@
   },
   "homepage": "https://github.com/TryHarder3l33t/capstone#readme",
   "dependencies": {
+    "aws-sdk": "^2.1151.0",
+    "dotenv": "^16.0.1",
     "express": "^4.18.1",
     "nodemon": "^2.0.16",
     "react-p5": "^1.3.30"
