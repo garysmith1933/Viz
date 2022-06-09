@@ -10,8 +10,6 @@ const bucketName = 'everizon-test-bucket';
 
 const accessKeyId = process.env.AWS_ACCESS_KEY_ID;
 const secretAccessKey = process.env.AWS_SECRET_ACCESS_KEY;
-console.log(accessKeyId);
-console.log(secretAccessKey);
 
 const s3 = new aws.S3({
   region,

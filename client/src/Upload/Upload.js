@@ -18,9 +18,6 @@ const Upload = () => {
   const [selectedFile, setSelectedFile] = useState();
   const image = 'https://i.ytimg.com/vi/LdeDIwzN0zU/maxresdefault.jpg';
   const [img, setImg] = useState(image);
-  useEffect(() => {
-    console.log(img);
-  }, [img]);
 
   //this is when the file is selected
   const handleCapture = ({ target }) => {
@@ -34,14 +31,11 @@ const Upload = () => {
   //this is when the file is saved
   const handleSubmit = async (ev) => {
     ev.preventDefault();
-    console.log(selectedFile);
 
     //get secure url from out server
     const { data } = await axios.get('/api/s3url');
-    console.log('This is the data ' + data);
 
     // post the image directley to the s3 bucket
-
     //post request to my server to store extra data
     //Send from front end to server backend. Backend sends back url
     const configuration = {
@@ -52,9 +46,6 @@ const Upload = () => {
 
     const { config } = await axios.put(data, selectedFile, configuration);
     setImg(config.url.split('?')[0]);
-    //const file = imageInput.files[0];
-
-    console.log(config.url.split('?')[0]);
   };
 
   return (
