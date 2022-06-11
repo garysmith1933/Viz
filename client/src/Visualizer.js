@@ -59,7 +59,7 @@ const Visualizer = () => {
   class Triangle {
     constructor(x,y) {
       this.pos = p.createVector(x,y)
-      this.vel = p.createVector(1,0)
+      this.vel = p.createVector(this.pos.x,this.pos.y)
       this.acc = p.createVector(0,0)
       this.angle = angle;
       this.radius = 200;
@@ -71,27 +71,32 @@ const Visualizer = () => {
       //moves point of origin
       p.translate(this.pos.x, this.pos.y)
 
-      //this is what makes the triangle point in the direction it is currently going - currently does not work
+      //this is what makes the triangle point in the direction it is currently going
       this.angle = this.vel.heading()
       p.rotate(this.angle)
-     p.triangle(-1, -1, -1, 1, 1, 0)
+  
+    
+    //angle for other direction
+    //  p.triangle(0,0,-1,1,1,1)
+
+
+    p.triangle(0,0.5,1,-1,-1,-1)
     }
 
     
     //WATCH THE VECTOR VIDEO
    update() {
-  
-    // const p5 = Object.getPrototypeOf(p).constructor
-    // this.angle += p.radians(0.03)
-    // // p.rotate(this.angle)
-    // this.vel = p5.Vector.fromAngle(this.angle)
+    const p5 = Object.getPrototypeOf(p).constructor
+    this.angle += p.radians(0.03)
+    // p.rotate(this.angle)
+    this.vel = p5.Vector.fromAngle(this.angle)
 
-    // this.pos.add(this.vel)
+    this.pos.add(this.vel)
     }
-  
+
   }
 
-
+//Makes triangle instances 
   for (let i = 0; i < numOfTriangles.length; i++) {
     let x = radius * p.cos(angle)
     let y = radius * p.sin(angle)
@@ -104,8 +109,9 @@ const Visualizer = () => {
     p.stroke('red')
     p.strokeWeight(10)
 
+    //this actually draws the triangles
     for (let i = 0; i < numOfTriangles.length; i++) {
-      // numOfTriangles[i].update()
+      numOfTriangles[i].update()
       numOfTriangles[i].draw()
       angle+= p.radians(1)
     }
@@ -139,6 +145,7 @@ const Visualizer = () => {
        }
   }    
 
+  //have to correct this
   const windowResized = () => {
     myp5.resizeCanvas(myp5.windowWidth, myp5.windowHeight);
   }
