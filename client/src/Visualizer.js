@@ -106,7 +106,7 @@ const Visualizer = () => {
     let x = radius * p.cos(angle)
     let y = radius * p.sin(angle)
     for (let a = 0; a < p.radians(64); a+=p.radians(12)) {
-      numOfTriangles[i] = new Triangle(x,y,a, sizeTreble, p.color("yellow"))
+      numOfTriangles[i] = new Triangle(x,y,a, sizeTreble, p.color("#FFA500"))
       numOfTriangles[i].draw(a)
     }
     //This cause the rotation of the diamonds
