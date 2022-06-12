@@ -29,45 +29,37 @@ const Visualizer = () => {
   
     //function that is passed to the sketch component as a prop
   const draw = (p) => {
-    //sets the background color
+    //sets the background color of canvas
     p.background("#243A73")
 
+    //moves canvas to center
+    p.translate(p.width/2, p.height/2)
+
     class Triangle {
-      constructor(x,y) {
+      constructor(x,y,a) {
         this.pos = p.createVector(x,y)
-        this.vel = p.createVector(this.pos.x,this.pos.y)
-        this.angle = null
-        this.radius = 200;
-      }
-  
-      draw(a) {
+        this.vel = p.createVector(0,0)
         this.angle = a
-        p.push()
-          p.translate(p.width/2, p.height/2)
-          p.rotate(this.angle)
-          //  this.angle = this.vel.heading()
-          p.translate(this.pos.x, this.pos.y)
-          p.strokeWeight(10)
-          p.stroke('red')
-          // p.triangle(0,0,-1,-1,-1, 1)
-          p.triangle(0,0,-1,-1,-1, 1)
-        p.pop()
-
-      //angle for other direction
-      //  p.triangle(0,0,-1,1,1,1)
+        this.circleRadius = 200;
       }
   
-      //you need to fix the direction it faces when rotates, this does not work.
-      update(a) {
-        const p5 = Object.getPrototypeOf(p).constructor
-        this.vel = p5.Vector.fromAngle(a)
-    
-        this.pos.add(this.vel)
-        }
+      //Draws the diamonds
+      draw() {
+        p.push()
+        //sets angle placed on circle, prevents other diamonds from being on top of each other
+          p.rotate(this.angle)
+        //moves to set position on circle, will be centered in canvas otherwise.
+          p.translate(this.pos.x, this.pos.y)
+          //sizing of diamond
+          p.strokeWeight(10)
+          //current color
+          p.stroke('red')
+          //Draws two triangles next to each other facing the opposite direction to make diamond shape
+          p.triangle(6,1,5,0,5, 2)
+          p.triangle(-6,1,-5,0,-5,2)
+        p.pop()
+      }
     }
-
-    
-    //Makes triangle instances 
 
     // This is what catches the pitches
   fft.analyze();
@@ -83,27 +75,23 @@ const Visualizer = () => {
   const mapTreble   = p.map( treble, 0, 255, -200, 200 );
 
 //sets the circle ring
-    p.push()
-      // Move the origin to the center of the canvas
-  p.translate( p.width/2, p.height/2 );
+  p.push()
   p.stroke(255)
   p.noFill()
   p.strokeWeight(3)
   p.circle(0,0,radius*2)
   p.pop()
 
-  
-
+  //Makes triangle instances 
   for (let i = 0; i < numOfTriangles.length; i++) {
     let x = radius * p.cos(angle)
     let y = radius * p.sin(angle)
-    numOfTriangles[i] = new Triangle(x,y)
-
-    for (let a = 0; a < p.radians(45); a+=p.radians(8)) {
-      numOfTriangles[i].update(a)
+    for (let a = 0; a < p.radians(64); a+=p.radians(12)) {
+      numOfTriangles[i] = new Triangle(x,y,a)
       numOfTriangles[i].draw(a)
     }
-    angle += p.radians(0.05)
+    //This cause the rotation of the diamonds
+    angle -= p.radians(0.1)
   }
 }
 
