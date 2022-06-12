@@ -10,7 +10,7 @@ let angle = 0
    
      // Circle's radius
      const radius = 200;
-const numOfTriangles = new Array(1)
+const numOfTriangles = new Array(6)
 
 // react-p5 has this so we can use p5 methods outside of draw, and set up.
   const myp5 = new window.p5()
@@ -32,8 +32,42 @@ const Visualizer = () => {
     //sets the background color
     p.background("#243A73")
 
-  // Move the origin to the center of the canvas
-  p.translate( p.width/2, p.height/2 );
+    class Triangle {
+      constructor(x,y) {
+        this.pos = p.createVector(x,y)
+        this.vel = p.createVector(this.pos.x,this.pos.y)
+        this.angle = null
+        this.radius = 200;
+      }
+  
+      draw(a) {
+        this.angle = a
+        p.push()
+          p.translate(p.width/2, p.height/2)
+          p.rotate(this.angle)
+          //  this.angle = this.vel.heading()
+          p.translate(this.pos.x, this.pos.y)
+          p.strokeWeight(10)
+          p.stroke('red')
+          // p.triangle(0,0,-1,-1,-1, 1)
+          p.triangle(0,0,-1,-1,-1, 1)
+        p.pop()
+
+      //angle for other direction
+      //  p.triangle(0,0,-1,1,1,1)
+      }
+  
+      //you need to fix the direction it faces when rotates, this does not work.
+      update(a) {
+        const p5 = Object.getPrototypeOf(p).constructor
+        this.vel = p5.Vector.fromAngle(a)
+    
+        this.pos.add(this.vel)
+        }
+    }
+
+    
+    //Makes triangle instances 
 
     // This is what catches the pitches
   fft.analyze();
@@ -50,76 +84,28 @@ const Visualizer = () => {
 
 //sets the circle ring
     p.push()
+      // Move the origin to the center of the canvas
+  p.translate( p.width/2, p.height/2 );
   p.stroke(255)
   p.noFill()
   p.strokeWeight(3)
   p.circle(0,0,radius*2)
   p.pop()
 
-  class Triangle {
-    constructor(x,y) {
-      this.pos = p.createVector(x,y)
-      this.vel = p.createVector(this.pos.x,this.pos.y)
-      this.acc = p.createVector(0,0)
-      this.angle = angle;
-      this.radius = 200;
-    }
-
-    draw() {
-      p.strokeWeight(10)
-      p.stroke("red")
-      //moves point of origin
-      p.translate(this.pos.x, this.pos.y)
-
-      //this is what makes the triangle point in the direction it is currently going
-      this.angle = this.vel.heading()
-      p.rotate(this.angle)
   
-    
-    //angle for other direction
-    //  p.triangle(0,0,-1,1,1,1)
 
-
-    p.triangle(0,0.5,1,-1,-1,-1)
-    }
-
-    
-    //WATCH THE VECTOR VIDEO
-   update() {
-    const p5 = Object.getPrototypeOf(p).constructor
-    this.angle += p.radians(0.03)
-    // p.rotate(this.angle)
-    this.vel = p5.Vector.fromAngle(this.angle)
-
-    this.pos.add(this.vel)
-    }
-
-  }
-
-//Makes triangle instances 
   for (let i = 0; i < numOfTriangles.length; i++) {
     let x = radius * p.cos(angle)
     let y = radius * p.sin(angle)
-    
-      numOfTriangles[i] = new Triangle(x,y, angle)
-  }
+    numOfTriangles[i] = new Triangle(x,y)
 
-
-    // create triangles
-    p.stroke('red')
-    p.strokeWeight(10)
-
-    //this actually draws the triangles
-    for (let i = 0; i < numOfTriangles.length; i++) {
-      numOfTriangles[i].update()
-      numOfTriangles[i].draw()
-      angle+= p.radians(1)
+    for (let a = 0; a < p.radians(45); a+=p.radians(8)) {
+      numOfTriangles[i].update(a)
+      numOfTriangles[i].draw(a)
     }
-    
+    angle += p.radians(0.05)
   }
-
-
-
+}
 
   //sets the currentSound to the audio
   const preload = () => {
