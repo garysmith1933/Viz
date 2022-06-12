@@ -1,6 +1,6 @@
 const { db, DataTypes } = require('../db');
 
-const beatModel = db.define('beat', {
+const beat = db.define('beat', {
   name: {
     type: DataTypes.STRING,
   },
@@ -9,4 +9,4 @@ const beatModel = db.define('beat', {
   },
 });
 
-module.exports = beatModel;
+module.exports = beat;
