@@ -7,6 +7,8 @@ import 'p5/lib/addons/p5.sound';
 let currentSound;
 let fft;
 let angle = 0
+//An array of colors to pick from. - Will set up later
+const colors = []
    
 // Circle's radius
 const radius = 200;
@@ -34,7 +36,6 @@ const Visualizer = () => {
 
     //moves canvas to center
     p.translate(p.width/2, p.height/2)
-
     
     // This is what catches the pitches
   fft.analyze();
@@ -49,18 +50,22 @@ const Visualizer = () => {
   const mapMid      = p.map( mid, 0, 255, -150, 150 );
   const mapTreble   = p.map( treble, 0, 255, -200, 200 );
 
-  // sizeBass = p.map()
-  // sizeMap =
-  const sizeTreble = p.map(mapTreble,-200, 200, 2, 4)
+  //for rotation speed of diamonds - NEED TO TWEEK THIS
+  const bassSpeed = p.map(bass, 0, 255, 0.03, 0.15)
+  const midSpeed = p.map(mid, 0, 255, 0.03, 0.01)
+  const trebleSpeed = p.map(treble, 0, 255, 0.03, 0.25)
+
+  // sets the size to the diamonds that are in the treble circle based on volume of treble 
+  const sizeTreble = p.map(treble, 0, 255, 10, 20)
 
     class Triangle {
-      constructor(x,y,a, size) {
+      constructor(x,y,a, size, color) {
         this.pos = p.createVector(x,y)
         this.vel = p.createVector(0,0)
         this.angle = a
         this.circleRadius = 200;
-        this.color = null
-        this.size = size * 5 || 10
+        this.color = color
+        this.size = size
       }
   
       //Draws the diamonds
@@ -71,9 +76,11 @@ const Visualizer = () => {
         //moves to set position on circle, will be centered in canvas otherwise.
           p.translate(this.pos.x, this.pos.y)
           //current color
-          p.fill('red')
+          p.fill(this.color)
+          //sets the outline of diamonds to black
           p.stroke(0)
-          p.strokeWeight(0.08)
+          //gives the black outline
+          p.strokeWeight(1)
           //draws the diamond shape depending on the size passed when new instance is created.
           p.beginShape();
             p.vertex(0, this.size);
@@ -86,24 +93,24 @@ const Visualizer = () => {
     }
 
 
-//sets the circle ring
-  p.push()
-  p.stroke(255)
-  p.noFill()
-  p.strokeWeight(3)
-  p.circle(0,0,radius*2)
-  p.pop()
+  //sets the circle ring
+    p.push()
+    p.stroke(255)
+    p.noFill()
+    p.strokeWeight(3)
+    p.circle(0,0,radius*2)
+    p.pop()
 
   //Makes triangle instances 
   for (let i = 0; i < numOfTriangles.length; i++) {
     let x = radius * p.cos(angle)
     let y = radius * p.sin(angle)
     for (let a = 0; a < p.radians(64); a+=p.radians(12)) {
-      numOfTriangles[i] = new Triangle(x,y,a, sizeTreble)
+      numOfTriangles[i] = new Triangle(x,y,a, sizeTreble, p.color("yellow"))
       numOfTriangles[i].draw(a)
     }
     //This cause the rotation of the diamonds
-    angle -= p.radians(0.1)
+    angle -= p.radians(trebleSpeed)
   }
 }
 
@@ -124,8 +131,7 @@ const Visualizer = () => {
        if(currentSound) {
         currentSound.pause()
        }
-      
-       }
+     }
         else {
           currentSound.play()  
        }
@@ -147,8 +153,7 @@ const Visualizer = () => {
       <button> Play </button>
       {audio ? 'there is audio' : 'we no have that'}
     </div>
-    )
-  
+    ) 
 }
 
 export default Visualizer
