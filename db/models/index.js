@@ -1,5 +1,5 @@
-const { beatModel: Beat } = require('./beat');
-const { userModel: User } = require('./user');
+const Beat = require('./beat');
+const User = require('./user');
 
 Beat.belongsTo(User);
 User.hasMany(Beat);

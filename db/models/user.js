@@ -1,6 +1,6 @@
 const { db, DataTypes } = require('../db');
 
-const userModel = db.define('user', {
+const user = db.define('user', {
   firstName: {
     type: DataTypes.STRING,
   },
@@ -15,4 +15,4 @@ const userModel = db.define('user', {
   },
 });
 
-module.exports = userModel;
+module.exports = user;
