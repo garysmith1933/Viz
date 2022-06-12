@@ -8,13 +8,13 @@ let currentSound;
 let fft;
 let angle = 0
    
-     // Circle's radius
-     const radius = 200;
+// Circle's radius
+const radius = 200;
 const numOfTriangles = new Array(6)
 
 // react-p5 has this so we can use p5 methods outside of draw, and set up.
   const myp5 = new window.p5()
-   //to get access to the fft function in setup, I need to get the prototype of this instance of P5 constructor
+   //to get access to the fft function in setup, I needed to get the prototype of this instance of P5 constructor, dont ask me why.
   const P5 = Object.getPrototypeOf(myp5).constructor
  
 
@@ -35,32 +35,7 @@ const Visualizer = () => {
     //moves canvas to center
     p.translate(p.width/2, p.height/2)
 
-    class Triangle {
-      constructor(x,y,a) {
-        this.pos = p.createVector(x,y)
-        this.vel = p.createVector(0,0)
-        this.angle = a
-        this.circleRadius = 200;
-      }
-  
-      //Draws the diamonds
-      draw() {
-        p.push()
-        //sets angle placed on circle, prevents other diamonds from being on top of each other
-          p.rotate(this.angle)
-        //moves to set position on circle, will be centered in canvas otherwise.
-          p.translate(this.pos.x, this.pos.y)
-          //sizing of diamond
-          p.strokeWeight(10)
-          //current color
-          p.stroke('red')
-          //Draws two triangles next to each other facing the opposite direction to make diamond shape
-          p.triangle(6,1,5,0,5, 2)
-          p.triangle(-6,1,-5,0,-5,2)
-        p.pop()
-      }
-    }
-
+    
     // This is what catches the pitches
   fft.analyze();
 
@@ -73,6 +48,43 @@ const Visualizer = () => {
   const mapBass     = p.map( bass, 0, 255, -100, 100 );
   const mapMid      = p.map( mid, 0, 255, -150, 150 );
   const mapTreble   = p.map( treble, 0, 255, -200, 200 );
+
+  // sizeBass = p.map()
+  // sizeMap =
+  const sizeTreble = p.map(mapTreble,-200, 200, 2, 4)
+
+    class Triangle {
+      constructor(x,y,a, size) {
+        this.pos = p.createVector(x,y)
+        this.vel = p.createVector(0,0)
+        this.angle = a
+        this.circleRadius = 200;
+        this.color = null
+        this.size = size * 5 || 10
+      }
+  
+      //Draws the diamonds
+      draw() {
+        p.push()
+        //sets angle placed on circle, prevents other diamonds from being on top of each other
+          p.rotate(this.angle)
+        //moves to set position on circle, will be centered in canvas otherwise.
+          p.translate(this.pos.x, this.pos.y)
+          //current color
+          p.fill('red')
+          p.stroke(0)
+          p.strokeWeight(0.08)
+          //draws the diamond shape depending on the size passed when new instance is created.
+          p.beginShape();
+            p.vertex(0, this.size);
+            p.vertex(this.size, 0);
+            p.vertex(0, -this.size);
+            p.vertex(-this.size, 0);
+          p.endShape(p.CLOSE);
+        p.pop()
+      }
+    }
+
 
 //sets the circle ring
   p.push()
@@ -87,7 +99,7 @@ const Visualizer = () => {
     let x = radius * p.cos(angle)
     let y = radius * p.sin(angle)
     for (let a = 0; a < p.radians(64); a+=p.radians(12)) {
-      numOfTriangles[i] = new Triangle(x,y,a)
+      numOfTriangles[i] = new Triangle(x,y,a, sizeTreble)
       numOfTriangles[i].draw(a)
     }
     //This cause the rotation of the diamonds
