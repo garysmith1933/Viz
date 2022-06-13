@@ -7,6 +7,7 @@ import 'p5/lib/addons/p5.sound';
 let currentSound;
 let fft;
 let angle = 0
+let angles = [0, 0, 0 ]
 //An array of colors to pick from. - Will set up later
 const colors = []
    
@@ -56,9 +57,9 @@ const Visualizer = () => {
   const mapTreble   = p.map( treble, 0, 255, -200, 200 );
 
   //for rotation speed of diamonds - NEED TO TWEEK THIS
-  const bassSpeed = p.map(bass, 0, 255, 0.01, 0.03)
-  const midSpeed = p.map(mid, 0, 255, 0.01, 0.03)
-  const trebleSpeed = p.map(treble, 0, 255, 0.01, 0.03)
+  const bassSpeed = p.map(bass, 0, 255, 0.1, 0.1)
+  const midSpeed = p.map(mid, 0, 255, 0.1, 0.1)
+  const trebleSpeed = p.map(treble, 0, 255, 0.1, 0.1)
 
   const speeds = [trebleSpeed, midSpeed, bassSpeed]
 
@@ -73,13 +74,12 @@ const Visualizer = () => {
   const sizeTreble = p.map(treble, 0, 255, 15, 30)
 
     class Diamond {
-      constructor(x, y, a, size, color, speed, direction) {
+      constructor(x, y, a, size, color, speed) {
         this.pos = p.createVector(x,y)
         this.angle = a
         this.color = color
         this.size = size
         this.speed = speed
-        this.direction = direction
       }
   
       //Draws the diamonds
@@ -102,7 +102,6 @@ const Visualizer = () => {
             p.vertex(0, -this.size);
             p.vertex(-this.size, 0);
           p.endShape(p.CLOSE);
-          angle -= this.direction === 1 ? p.radians(this.speed): p.radians(-this.speed)
         p.pop()
       }
     }
@@ -120,8 +119,8 @@ for (let j = 1; j <= numOfCircles; j++){
 //Makes diamonds instances 
 for (let i = 0; i < numOfDiamonds.length; i++) {
   // console.log(radiusMultiplier[j])
-  let x = (radius * radiusMultiplier[j-1]) * p.cos(angle+anglePos[j-1])
-  let y = (radius * radiusMultiplier[j-1]) * p.sin(angle+anglePos[j-1])
+  let x = (radius * radiusMultiplier[j-1]) * p.cos(angles[j-1]+anglePos[j-1])
+  let y = (radius * radiusMultiplier[j-1]) * p.sin(angles[j-1]+anglePos[j-1])
 
   
 //This makes 
@@ -130,6 +129,9 @@ for (let i = 0; i < numOfDiamonds.length; i++) {
     numOfDiamonds[i].draw(a)
   }
 }
+
+//set an array of angles, that we can adjust from here to set the direction of each one
+angles[j-1] += directions[j-1] === 1 ? p.radians(speeds[j-1]): p.radians(-speeds[j-1])
 }
 }
 
