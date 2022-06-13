@@ -11,8 +11,12 @@ let angle = 0
 const colors = []
    
 // Circle's radius
-const radius = 200;
-const numOfTriangles = new Array(6)
+let radius = 200;
+const radiusMultiplier = [1, 1.5, 2]
+const numOfCircles = 3
+const numOfDiamonds = new Array(6)
+const anglePos = [0, 90, 180]
+const directions = [-1, 1, -1]
 
 // react-p5 has this so we can use p5 methods outside of draw, and set up.
   const myp5 = new window.p5()
@@ -27,6 +31,7 @@ const Visualizer = () => {
   const setup = (p, canvasParentRef) => {
     p.createCanvas(p.windowWidth, p.windowHeight).parent(canvasParentRef)
     fft = new P5.FFT()
+    p.frameRate(60)
   }
   
     //function that is passed to the sketch component as a prop
@@ -51,21 +56,30 @@ const Visualizer = () => {
   const mapTreble   = p.map( treble, 0, 255, -200, 200 );
 
   //for rotation speed of diamonds - NEED TO TWEEK THIS
-  const bassSpeed = p.map(bass, 0, 255, 0.03, 0.15)
-  const midSpeed = p.map(mid, 0, 255, 0.03, 0.01)
-  const trebleSpeed = p.map(treble, 0, 255, 0.03, 0.25)
+  const bassSpeed = p.map(bass, 0, 255, 0.01, 0.03)
+  const midSpeed = p.map(mid, 0, 255, 0.01, 0.03)
+  const trebleSpeed = p.map(treble, 0, 255, 0.01, 0.03)
+
+  const speeds = [trebleSpeed, midSpeed, bassSpeed]
+
+  //LOOK HERE
+  //things I need to look into tomorrow
+  //Setting the size for the other two sets of triangles to compensate gap 
+  //color palletes
+  //rotation reverse
+  
 
   // sets the size to the diamonds that are in the treble circle based on volume of treble 
-  const sizeTreble = p.map(treble, 0, 255, 10, 20)
+  const sizeTreble = p.map(treble, 0, 255, 15, 30)
 
-    class Triangle {
-      constructor(x,y,a, size, color) {
+    class Diamond {
+      constructor(x, y, a, size, color, speed, direction) {
         this.pos = p.createVector(x,y)
-        this.vel = p.createVector(0,0)
         this.angle = a
-        this.circleRadius = 200;
         this.color = color
         this.size = size
+        this.speed = speed
+        this.direction = direction
       }
   
       //Draws the diamonds
@@ -88,31 +102,38 @@ const Visualizer = () => {
             p.vertex(0, -this.size);
             p.vertex(-this.size, 0);
           p.endShape(p.CLOSE);
+          angle -= this.direction === 1 ? p.radians(this.speed): p.radians(-this.speed)
         p.pop()
       }
     }
 
 
-  //sets the circle ring
-    p.push()
-    p.stroke(255)
-    p.noFill()
-    p.strokeWeight(3)
-    p.circle(0,0,radius*2)
-    p.pop()
+  //sets the circle rings 
+for (let j = 1; j <= numOfCircles; j++){
+  p.push()
+  p.stroke(255)
+  p.noFill()
+  p.strokeWeight(2)
+  p.circle(0,0,radius*(j+1))
+  p.pop()
 
-  //Makes triangle instances 
-  for (let i = 0; i < numOfTriangles.length; i++) {
-    let x = radius * p.cos(angle)
-    let y = radius * p.sin(angle)
-    for (let a = 0; a < p.radians(64); a+=p.radians(12)) {
-      numOfTriangles[i] = new Triangle(x,y,a, sizeTreble, p.color("#FFA500"))
-      numOfTriangles[i].draw(a)
-    }
-    //This cause the rotation of the diamonds
-    angle -= p.radians(trebleSpeed)
+//Makes diamonds instances 
+for (let i = 0; i < numOfDiamonds.length; i++) {
+  // console.log(radiusMultiplier[j])
+  let x = (radius * radiusMultiplier[j-1]) * p.cos(angle+anglePos[j-1])
+  let y = (radius * radiusMultiplier[j-1]) * p.sin(angle+anglePos[j-1])
+
+  
+//This makes 
+  for (let a = 0; a < p.radians(32); a+=p.radians(6)) {
+    numOfDiamonds[i] = new Diamond(x,y,a, sizeTreble, p.color("#FFA500"), speeds[j-1], directions[j-1])
+    numOfDiamonds[i].draw(a)
   }
 }
+}
+}
+
+  
 
   //sets the currentSound to the audio
   const preload = () => {
