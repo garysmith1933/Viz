@@ -5,11 +5,14 @@ import Login from './components/AuthForm';
 import { useSelector } from 'react-redux';
 function App() {
   const user = useSelector((state) => state.auth);
+  const auth = useSelector((state) => state.authorizeReducer.auth);
+  console.log(auth);
+  console.log(auth && auth.id);
+
   return (
     <>
       <NavBar />
-      <Routing />
-      {user.Id ? null : <Login />}
+      {auth.id ? <Routing /> : <Login />}
     </>
   );
 }
