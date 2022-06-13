@@ -43,7 +43,7 @@ const Login = () => {
 
   useEffect(() => {
     setError('');
-  }, [username]);
+  }, [username, pwd]);
 
   const handleSubmit = async (e) => {
     const payload = { username, pwd, signUp, firstName, lastName };
@@ -56,6 +56,8 @@ const Login = () => {
     } else if (!data && signUp) {
       console.log('you dont have data');
       setError('PICK ANOTHER USERNAME');
+    } else if (data === null && !signUp) {
+      setError('BAD PASSWORD AND OR USERNAME');
     }
   };
 
