@@ -62,7 +62,10 @@ export const signIn_signUp = (payload) => {
       const { data } = await axios.post('/api/auth', payload);
 
       console.log('this is from actions ' + JSON.stringify(data, null, 2));
-      dispatch(_signIn_signUp(data));
+      if (data != null) {
+        dispatch(_signIn_signUp(data));
+      }
+
       return data;
     } catch (error) {
       console.log('dispatch error ' + error);

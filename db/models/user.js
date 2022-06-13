@@ -39,7 +39,7 @@ User.signIn = async ({ username, pwd }) => {
         password: pwd,
       },
     });
-    console.log('this is the findone ' + user.data);
+    console.log('this is the findone ' + user);
     return user;
   } catch (error) {
     console.log(error);
