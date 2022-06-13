@@ -3,6 +3,9 @@ const app = express();
 
 const path = require('path');
 
+//Without this body parser all req.body === undefined :(
+app.use(express.json());
+
 //needed for heroku deploy
 app.use(express.static(path.join(__dirname, 'client/build')));
 

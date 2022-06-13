@@ -1,129 +1,199 @@
-
-import { useRef,useState, useEffect } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import {
-    Button,
-    Typography,
-    FormControl,
-    FormControlLabel,
-    Input,
-    InputLabel,
-    InputAdornment,
-    Checkbox,
-    Grid,
-    Paper,
-    Avatar,
-    IconButton,
-  } from "@mui/material";
+  Button,
+  Typography,
+  FormControl,
+  FormControlLabel,
+  Input,
+  InputLabel,
+  InputAdornment,
+  Checkbox,
+  Grid,
+  Paper,
+  Avatar,
+  IconButton,
+} from '@mui/material';
+import { useDispatch } from 'react-redux';
+import { signIn_signUp } from '../store';
 
 const paperStyle = {
-    padding: 20,
-    height: "auto",
-    width: 380,
-    margin: "20px auto",
+  padding: 20,
+  height: 'auto',
+  width: 380,
+  margin: '20px auto',
 };
 
+const Login = () => {
+  const userRef = useRef();
+  const errRef = useRef();
+  const dispatch = useDispatch();
 
-const Login = ()=>{
-    const userRef = useRef()
-    const errRef = useRef()
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [username, setUser] = useState('');
+  const [pwd, setPwd] = useState('');
+  const [errMsg, setErrMsg] = useState('');
+  const [success, setSuccess] = useState(false);
+  const [signUp, setSignUp] = useState(false);
+  const [error, setError] = useState(null);
 
-    const [user, setUser] = useState('')
-    const [pwd,setPwd] = useState('')
-    const [errMsg,setErrMsg] = useState('')
-    const [success, setSuccess] = useState(false);
+  useEffect(() => {
+    userRef.current.focus();
+  }, []);
 
-    useEffect(()=>{
-        userRef.current.focus();
-    },[])
+  useEffect(() => {
+    setError('');
+  }, [username]);
 
-    useEffect(()=>{
-        setErrMsg('')
-    },[user,pwd])
+  const handleSubmit = async (e) => {
+    const payload = { username, pwd, signUp, firstName, lastName };
+    console.log(payload);
+    e.preventDefault();
 
-    const handleSubmit = async(e)=>{
-        e.preventDefault();
-
+    const data = await dispatch(signIn_signUp(payload));
+    if (data) {
+      console.log('you have data');
+    } else if (!data && signUp) {
+      console.log('you dont have data');
+      setError('PICK ANOTHER USERNAME');
     }
+  };
 
-    return(
-        <>
-            {success?(
-                <section>
-                    <h1>You are logged in!</h1>
-                    <br />
-                    <p>
-                        <a href="#">Go to Home</a>
-                    </p>
-                </section>
-            ):(
-                <Grid>
-                    <Paper elevation={10} style={paperStyle}>
-                        <section>
-                            <p ref={errRef} className={errMsg? "errmsg" : "offscreen"} aria-live="assertive">{errMsg}</p>
-                            <h1>Sign In</h1>
-                            <form onSubmit={handleSubmit}>
-                                <FormControl
-                                    variant="standard"
-                                    className="textfield"
-                                    sx={{ margin: "8px" }}
-                                    fullWidth
-                                    required
-                                >
-                                    <InputLabel htmlFor="username">Username</InputLabel>
-                                    <Input 
-                                        type="text" 
-                                        id='username'
-                                        ref={userRef}
-                                        autoComplete="off"
-                                        onChange={(e)=> setUser(e.target.value)}
-                                        value = {user}
-                                        required 
-                                    />
-                                </FormControl>
-                                <FormControl
-                                    variant="standard"
-                                    className="textfield"
-                                    sx={{ margin: "8px" }}
-                                    fullWidth
-                                    required
-                                >
-                                    <InputLabel htmlFor="password">Password</InputLabel>
-                                    <Input 
-                                        type="password" 
-                                        id='password'
-                                        onChange={(e)=> setPwd(e.target.value)}
-                                        value = {pwd}
-                                        required
-                                    />
-                                </FormControl>
-                                <Button
-                                    variant="contained"
-                                    sx={{
-                                        margin: "0",
-                                        backgroundColor: "mediumblue",
-                                        fontWeight: "600",
-                                    }}
-                                    type="submit"
-                                    fullWidth
-                                >
-                                    Log In
-                                </Button>
-                            </form>
-                            <p>
-                                Need an Account?<br />
-                                <span className="line">
-                                    {/*put router link here*/}
-                                    <a href="sign_up">Sign Up</a>
-                                </span>
-                            </p>
-                        </section>
-                    </Paper>
-                </Grid>
-                )
-            }      
-        </>
-    )
+  const handleSignButton = () => {
+    setSignUp(!signUp);
+  };
 
-}
+  return (
+    <>
+      {success ? (
+        <section>
+          <h1>You are logged in!</h1>
+          <br />
+          <p>
+            <a href='#'>Go to Home</a>
+          </p>
+        </section>
+      ) : (
+        <Grid>
+          <Paper elevation={10} style={paperStyle}>
+            <section>
+              <p
+                ref={errRef}
+                className={errMsg ? 'errmsg' : 'offscreen'}
+                aria-live='assertive'
+              >
+                {errMsg}
+              </p>
 
-export default Login
+              {signUp ? <h2>Please Fill Out Form</h2> : <h2>Sign In</h2>}
+              <form onSubmit={handleSubmit}>
+                {signUp ? (
+                  <>
+                    <FormControl
+                      variant='standard'
+                      className='textfield'
+                      sx={{ margin: '8px' }}
+                      fullWidth
+                      required
+                    >
+                      <InputLabel htmlFor='firstName'>First Name</InputLabel>
+                      <Input
+                        type='text'
+                        id='firstName'
+                        ref={userRef}
+                        autoComplete='off'
+                        onChange={(e) => setFirstName(e.target.value)}
+                        value={firstName}
+                        required
+                      />
+                    </FormControl>{' '}
+                    <FormControl
+                      variant='standard'
+                      className='textfield'
+                      sx={{ margin: '8px' }}
+                      fullWidth
+                      required
+                    >
+                      <InputLabel htmlFor='lastName'>Last Name</InputLabel>
+                      <Input
+                        type='text'
+                        id='lastName'
+                        ref={userRef}
+                        autoComplete='off'
+                        onChange={(e) => setLastName(e.target.value)}
+                        value={lastName}
+                        required
+                      />
+                    </FormControl>
+                  </>
+                ) : (
+                  ''
+                )}
+
+                <FormControl
+                  variant='standard'
+                  className='textfield'
+                  sx={{ margin: '8px' }}
+                  fullWidth
+                  required
+                >
+                  <InputLabel htmlFor='username'>Username</InputLabel>
+                  <Input
+                    type='text'
+                    id='username'
+                    ref={userRef}
+                    autoComplete='off'
+                    onChange={(e) => setUser(e.target.value)}
+                    value={username}
+                    required
+                  />
+                </FormControl>
+                <FormControl
+                  variant='standard'
+                  className='textfield'
+                  sx={{ margin: '8px' }}
+                  fullWidth
+                  required
+                >
+                  <InputLabel htmlFor='password'>Password</InputLabel>
+                  <Input
+                    type='password'
+                    id='password'
+                    onChange={(e) => setPwd(e.target.value)}
+                    value={pwd}
+                    required
+                  />
+                </FormControl>
+                <Button
+                  variant='contained'
+                  sx={{
+                    margin: '0',
+                    padding: '0',
+                    backgroundColor: 'mediumblue',
+                    fontWeight: '600',
+                  }}
+                  type='submit'
+                  fullWidth
+                >
+                  {signUp ? <p>Sign Up</p> : <p>Sign In</p>}
+                </Button>
+              </form>
+              {error ? <p>{error}</p> : ''}
+              <p>
+                <span className='line'>
+                  {/*put router link here*/}
+
+                  <Button onClick={() => handleSignButton()}>
+                    {signUp ? <p>Sign In</p> : <p>Sign Up</p>}
+                  </Button>
+                </span>
+              </p>
+            </section>
+          </Paper>
+        </Grid>
+      )}
+    </>
+  );
+};
+
+export default Login;

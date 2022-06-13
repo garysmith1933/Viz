@@ -8,7 +8,7 @@ const Routing = () => {
   //const user = useSelector((state) => state.auth);
   return (
     <Routes>
-      <Route path='/Player' element={<Visualizer />} />
+      <Route path='/' element={<Visualizer />} />
       <Route path='/Upload' element={<Upload />} />
     </Routes>
   );

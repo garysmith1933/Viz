@@ -22,7 +22,7 @@ const NavBar = () => {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
   const user = useSelector((state) => state.auth);
-  console.log('user', user);
+  //console.log('user', user);
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
   };
