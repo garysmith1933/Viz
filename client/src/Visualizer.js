@@ -6,10 +6,33 @@ import 'p5/lib/addons/p5.sound';
 
 let currentSound;
 let fft;
-let angle = 0
-let angles = [0, 0, 0, 0, 0]
-//An array of colors to pick from. - Will set up later
-const colors = ["#FFA500","pink",'purple', 'red', 'green']
+let angles = [45, 45, 45, 45, 45]
+let selectedPalette = 0
+let swap
+let windowResized
+
+//An array of colors to pick from. - Will set up later colors[0][0]
+const colors = 
+[
+//Considering setting the ones thats not the base to be color templates based on the tempo of the song, ex: engergetic, slow.. Not sure. -GS
+
+  //Base - I ll fight over this one
+  ['#ffbe0b','#fb5607','#ff006e','#8338ec','#3a86ff'],
+
+  //Something random
+  ['#0d3b66','#faf0ca','f4d35e','#ee964b','#f95738'],
+
+  //Earthy somewhat
+  ['#264653','#2a9d8f','#e9c46a','#f4a261','#e76f51'],
+
+  //Not sold on this one
+  ['#231942','#5e548e','#9f86c0','#be95c4','#e0b1cb'],
+
+  //Cotton Candy
+  ["#cdb4db","#ffc8dd",'#ffafcc', '#bde0fe', '#a2d2ff']
+
+]
+
    
 // Circle's radius
 let radius = 100;
@@ -32,8 +55,15 @@ const Visualizer = () => {
     p.createCanvas(p.windowWidth, p.windowHeight).parent(canvasParentRef)
     fft = new P5.FFT()
     p.frameRate(120)
-  }
+
+    //still not working
+    windowResized = () => {
+      p.resizeCanvas(p.windowWidth, p.windowHeight);
+    }
   
+  }
+
+
     //function that is passed to the sketch component as a prop
   const draw = (p) => {
     //sets the background color of canvas
@@ -53,28 +83,31 @@ const Visualizer = () => {
   const highMid = fft.getEnergy("highMid")
 
   //for rotation speed of diamonds - NEED TO TWEEK THIS
-  const bassSpeed = p.map(bass, 0, 255, 0.3, 1.3)
-  const midSpeed = p.map(mid, 0, 255, 0.3, 1.8)
-  const trebleSpeed = p.map(treble, 0, 255, 0.3, 3)
-  const lowMidSpeed = p.map(lowMid, 0, 255, 0.3, 1.3 )
-  const highMidSpeed = p.map(highMid, 0, 255, 0.3, 1.8)
+  const trebleSpeed = p.map(treble, 0, 255, 0.3, 5)
+  //second slowest
+  const lowMidSpeed = p.map(lowMid, 0, 255, 0.3, 1.2)
+  const midSpeed = p.map(mid, 0, 255, 0.3, 2.5)
+  const highMidSpeed = p.map(highMid, 0, 255, 0.3, 1.5)
+  //slowest
+  const bassSpeed = p.map(bass, 0, 255, 0.3, 1.2)
+  
 
   const speeds = [trebleSpeed, lowMidSpeed, midSpeed, highMidSpeed, bassSpeed]
 
 
-  //LOOK HERE
-  //things I need to look into tomorrow
-  //Setting the size for the other two sets of triangles to compensate gap - COMPLETE
-  //color palletes
-  //rotation reverse - COMPLETE
-  //draw watermarks?
+  //Whats left?
+  //draw watermarks? trail
+  // fix colors
+  // preset speed adjustments 
   
 
   // sets the size to the diamonds that are in the treble circle based on volume of treble 
   const sizeTreble = p.map(treble, 0, 255, 15, 45)
+  //second heaviest
   const sizeLowMid = p.map(lowMid , 0 , 255, 15, 60)
   const sizeMid = p.map(mid, 0, 255, 15, 30)
   const sizeHighMid = p.map(highMid , 0 , 255, 15, 45)
+  //heaviest
   const sizeBass = p.map(bass, 0, 255, 15, 60)
 
   const sizes = [sizeTreble, sizeLowMid, sizeMid, sizeHighMid, sizeBass]
@@ -115,41 +148,30 @@ const Visualizer = () => {
 
 
   //sets the circle rings 
-for (let j = 1; j <= numOfCircles; j++){
-  p.push()
-  p.stroke(0)
-  p.noFill()
-  p.strokeWeight(2)
-  p.circle(0,0,radius*(j+1))
-  p.pop()
+  for (let j = 1; j <= numOfCircles; j++){
+    let current = j-1
+    p.push()
+    p.stroke(0)
+    p.noFill()
+    p.strokeWeight(2)
+    p.circle(0,0,radius*(j+1))
+    p.pop()
 
-//Makes diamonds instances 
-  // console.log(radiusMultiplier[j])
-  const x = (radius * radiusMultiplier[j-1]) * p.cos(angles[j-1]+anglePos[j-1])
-  const y = (radius * radiusMultiplier[j-1]) * p.sin(angles[j-1]+anglePos[j-1])
+  //polar to cartesian coordinates, basically..this is where our diamond drawing will begin
+    const x = (radius * radiusMultiplier[j-1]) * p.cos(angles[j-1]+anglePos[j-1])
+    const y = (radius * radiusMultiplier[j-1]) * p.sin(angles[j-1]+anglePos[j-1])
 
-  
-//This makes 
-  for (let a = 0; a < p.radians(12); a+=p.radians(2)) {
-    const diamond = new Diamond(x,y,a, sizes[j-1], p.color([colors[j-1]]), speeds[j-1], directions[j-1])
-    diamond.draw(a)
+    //for every 2 degrees moved place a diamond 
+    for (let a = 0; a < p.radians(12); a+=p.radians(2)) {
+      //Makes diamonds instances 
+      const diamond = new Diamond(x,y,a, sizes[current], p.color(colors[selectedPalette][current]), speeds[current], directions[current])
+      diamond.draw(a)
+    }
+
+  //if the diamonds of the current circle being drawn have a direction of one, go one way, else go the other way
+  angles[j-1] += directions[current] === 1 ? p.radians(speeds[current]): p.radians(-speeds[current])
   }
-
-
-//if the drop is hard enough, LETS REVERSE IT!
-  if(bass > 250 && lowMid > 225) {
-    console.log('reversing')
-    directions[j-1] *= -1
-  }
-
-
-// //set an array of angles, that we can adjust from here to set the direction of each one
-angles[j-1] += directions[j-1] === 1 ? p.radians(speeds[j-1]): p.radians(-speeds[j-1])
 }
-}
-
-  
-
   //sets the currentSound to the audio
   const preload = () => {
     currentSound = myp5.loadSound(audio)
@@ -157,6 +179,7 @@ angles[j-1] += directions[j-1] === 1 ? p.radians(speeds[j-1]): p.radians(-speeds
   
     //any time audio is changed, run preload
   useEffect(() => {
+    //if there is a song playing, turn it off before we set the new song
     if(currentSound) {
       if(currentSound.isPlaying() === true) {
         currentSound.stop()
@@ -165,6 +188,40 @@ angles[j-1] += directions[j-1] === 1 ? p.radians(speeds[j-1]): p.radians(-speeds
     
     preload()
   },[audio])
+
+     
+     swap = () => {
+      // if(myp5.keyCode === 65) {
+      //   for (let i = 0; i < speeds.length; i++) {
+      //     speeds[i] = speeds[i] *= 1.5
+      //   }
+      // }
+
+      // if(myp5.keyCode === 65) {
+      //   for (let i = 0; i < speeds.length; i++) {
+      //     speeds[i] = speeds[i] -= 1.5
+      //   }
+      // }
+
+    //Reverses direction on W key, at the moment
+       if(myp5.keyCode === 87) {
+        for (let i = 0; i < directions.length; i++) {
+          directions[i] *= -1
+        }    
+       }
+       
+       // Cycles color palette by pressing enter key
+      if (myp5.keyCode === 13) {   
+        //if we are on the last palette
+        if(selectedPalette === 4)  {
+          //reset the cycle
+          selectedPalette = 0;
+          return
+        }          
+          selectedPalette++
+      }
+      return false; // prevent default
+  }
 
   
   //in chrome, the pause feature will work once and then go back to the first time you paused it. However, this works as it should in Mozilla Firefox
@@ -178,17 +235,11 @@ angles[j-1] += directions[j-1] === 1 ? p.radians(speeds[j-1]): p.radians(-speeds
           currentSound.play()  
        }
   }    
-
-  //have to correct this
-  const windowResized = () => {
-    myp5.resizeCanvas(myp5.windowWidth, myp5.windowHeight);
-  }
-  
   
   return (
     <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
       <div>
-        <Sketch setup={setup} draw={draw} preload={preload} mouseClicked={mouseClicked} windowResized={windowResized}/>
+        <Sketch setup={setup} draw={draw} preload={preload} mouseClicked={mouseClicked} windowResized={windowResized} keyPressed={swap}/>
       </div>
       
       <input type="file" name="file" accept="audio/*" onChange={(event) => setAudio(event.target.files[0])}/>
