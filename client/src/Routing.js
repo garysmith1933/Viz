@@ -5,8 +5,6 @@ import Visualizer from './Visualizer';
 import SpotifyLogin from './Spotify';
 //import { useSelector } from 'react-redux';
 
-//currently if I wanted to get to the spotify page I would have to login again, is this by design or a bug ? - GS
-
 const Routing = () => {
   //const user = useSelector((state) => state.auth);
   return (

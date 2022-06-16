@@ -4,8 +4,6 @@ import 'p5/lib/addons/p5.sound';
 
 //IMPORTANT: Each array has a length of 5, the order is treble, lowmid, mid, highmid, bass
 
-//I have some notes on it later down the code but ill put some instructions here as well.
-
 // W key = Reverse direction of where the diamonds are currently going
 //A key = increases the top speed of diamonds when a song is playing by a set amount
 //S key = decreases the top speed of diamonds when a song is playing by a set amount
@@ -66,10 +64,20 @@ const topSpeeds = [
   [3.8, 1.4, 3.2, 2.8, 1.4]
 ]
 
+
+const getCurrentSpeed = () => {
+  if (selectedSpeed === 0) return 'slowest'
+  if (selectedSpeed === 1) return 'slower'
+  if (selectedSpeed === 2) return 'normal'
+  if (selectedSpeed === 3) return 'faster'
+  if (selectedSpeed === 4) return 'fastest'
+  // return 'normal'
+}
  
 const Visualizer = () => {
   const [audio, setAudio] = useState('')
-  
+  const [currentSpeed, setCurrentSpeed] = useState(getCurrentSpeed())
+
   // function that is passed to the sketch component as a prop
   const setup = (p, canvasParentRef) => {
     p.createCanvas(windowWidth, windowheight).parent(canvasParentRef)
@@ -108,11 +116,11 @@ const Visualizer = () => {
   const speeds = [trebleSpeed, lowMidSpeed, midSpeed, highMidSpeed, bassSpeed]
   
   //takes the volume of the frequencies and sets them the size of a variable 
-  const sizeTreble = p.map(treble, 0, 255, 15, 45)
-  const sizeLowMid = p.map(lowMid , 0 , 255, 15, 60)
-  const sizeMid = p.map(mid, 0, 255, 15, 30)
-  const sizeHighMid = p.map(highMid , 0 , 255, 15, 45)
-  const sizeBass = p.map(bass, 0, 255, 15, 60)
+  const sizeTreble = p.map(treble, 0, 255, 15, 60)
+  const sizeLowMid = p.map(lowMid , 0 , 255, 15, 70)
+  const sizeMid = p.map(mid, 0, 255, 15, 60)
+  const sizeHighMid = p.map(highMid , 0 , 255, 15, 60)
+  const sizeBass = p.map(bass, 0, 255, 15, 70)
 
   //then we shove it in this array
   const sizes = [sizeTreble, sizeLowMid, sizeMid, sizeHighMid, sizeBass]
@@ -194,6 +202,7 @@ const Visualizer = () => {
         //if you are at the max speed, chill out!
         if(selectedSpeed === 4) return;
         selectedSpeed++
+        setCurrentSpeed(getCurrentSpeed())
       }
 
       //decreases speed, press s
@@ -201,6 +210,7 @@ const Visualizer = () => {
         //if you are at the bottom and its still too much...I suck at adjusting speed lol
         if(selectedSpeed === 0) return;
         selectedSpeed--
+        setCurrentSpeed(getCurrentSpeed())
       }
 
     //Reverses direction on W key, at the moment
@@ -242,6 +252,7 @@ const Visualizer = () => {
 
   return (
     <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center',}}>
+      <h1>{currentSpeed}</h1>
       <div>
         <Sketch setup={setup} draw={draw} preload={preload} mouseClicked={mouseClicked} windowResized={windowResized} keyPressed={keyPresses}/>
       </div>
