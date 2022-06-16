@@ -116,11 +116,11 @@ const Visualizer = () => {
   const speeds = [trebleSpeed, lowMidSpeed, midSpeed, highMidSpeed, bassSpeed]
   
   //takes the volume of the frequencies and sets them the size of a variable 
-  const sizeTreble = p.map(treble, 0, 255, 15, 60)
-  const sizeLowMid = p.map(lowMid , 0 , 255, 15, 70)
-  const sizeMid = p.map(mid, 0, 255, 15, 60)
-  const sizeHighMid = p.map(highMid , 0 , 255, 15, 60)
-  const sizeBass = p.map(bass, 0, 255, 15, 70)
+  const sizeTreble = p.map(treble, 0, 255, 15, 45)
+  const sizeLowMid = p.map(lowMid , 0 , 255, 15, 60)
+  const sizeMid = p.map(mid, 0, 255, 15, 45)
+  const sizeHighMid = p.map(highMid , 0 , 255, 15, 45)
+  const sizeBass = p.map(bass, 0, 255, 15, 60)
 
   //then we shove it in this array
   const sizes = [sizeTreble, sizeLowMid, sizeMid, sizeHighMid, sizeBass]
@@ -258,7 +258,9 @@ const Visualizer = () => {
       </div>
 
       <div style={{display: 'flex', justifyContent:'space-around'}}>
-        <input type="file" name="file" accept="audio/*" onChange={(event) => setAudio(event.target.files[0])}/>
+        <input type="file" name="file" accept="audio/*" onChange={(event) => {
+          setAudio(event.target.files[0])}
+        }/>
         <button> Play </button>
       </div>
     </div>
