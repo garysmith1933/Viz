@@ -53,8 +53,6 @@ const colors = [
 
 //if you try to make this one variable, they will all move in unison, we dont want that.
 let angles = [45, 45, 45, 45, 45]
-let selectedTheme = colors[5]
-let selectedPalette = selectedTheme.color
 let selectedSpeed = 2
   
 // Circle's radius
@@ -83,22 +81,18 @@ const topSpeeds = [
   [3.8, 1.4, 3.2, 2.8, 1.4]
 ]
 
-
-
-
 const getCurrentSpeed = () => {
   if (selectedSpeed === 0) return 'slowest'
   if (selectedSpeed === 1) return 'slower'
   if (selectedSpeed === 2) return 'normal'
   if (selectedSpeed === 3) return 'faster'
   if (selectedSpeed === 4) return 'fastest'
-  // return 'normal'
 }
  
 const Visualizer = () => {
   const [audio, setAudio] = useState('')
   const [currentSpeed, setCurrentSpeed] = useState(getCurrentSpeed())
-  const [colorCombination, setColorCombination] = useState(0)
+  const [colorTheme, setColorTheme] = useState(0)
 
   // function that is passed to the sketch component as a prop
   const setup = (p, canvasParentRef) => {
@@ -108,7 +102,7 @@ const Visualizer = () => {
   }
 
   const handleChange = (event) => {
-    setColorCombination(event.target.value);
+    setColorTheme(event.target.value);
   };
 
     //function that is passed to the sketch component as a prop
@@ -196,7 +190,8 @@ const Visualizer = () => {
     //for every 2 degrees moved place a diamond 
     for (let a = 0; a < p.radians(12); a+=p.radians(2)) {
       //Makes diamonds instances 
-      const diamond = new Diamond(x,y,a, sizes[current], p.color(colors[colorCombination].color[current]), speeds[current], directions[current])
+
+      const diamond = new Diamond(x,y,a, sizes[current], p.color(colors[colorTheme].color[current]), speeds[current], directions[current])
       //this is what draws the diamonds
       diamond.draw(a)
     }
@@ -248,13 +243,14 @@ const Visualizer = () => {
        
        // Cycles color palette by pressing enter key
       if (myp5.keyCode === 13) {   
+        console.log(colorTheme)
         //if we are on the last palette
-        if(selectedPalette === 4)  {
+        if(colorTheme === 9)  {
           //reset the cycle
-          selectedPalette = 0;
+          setColorTheme(0)
           return;
         }          
-          selectedPalette++
+          setColorTheme(colorTheme+1)
       }
       return false; 
     }
@@ -296,7 +292,7 @@ const Visualizer = () => {
             <Select
               labelId="color-theme"
               id="color-theme"
-              value={colorCombination}
+              value={colorTheme}
               onChange={handleChange}
               autoWidth
               label="colorTheme"
