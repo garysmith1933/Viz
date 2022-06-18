@@ -54,6 +54,9 @@ const Instructions = () => {
                         <Typography id="instruction-text" sx={{ mt: 2 }}>
                         Press the W key to rotate the direction of diamonds.
                         </Typography>
+                        <Typography id="instruction-text" sx={{ mt: 2 }}>
+                        Press the Enter key to cycle through our color pallettes of diamonds.
+                        </Typography>
                     </Box>
                     </Fade>
                 </Modal>
