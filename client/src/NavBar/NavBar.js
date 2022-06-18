@@ -21,8 +21,8 @@ const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 const NavBar = () => {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
-  const user = useSelector((state) => state.auth);
-  //console.log('user', user);
+  
+  const auth = useSelector((state) => state.authorizeReducer.auth);
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
   };
@@ -116,9 +116,9 @@ const NavBar = () => {
           >
             LOGO
           </Typography>
-          {user.Id ? (
-            <div id='nav'>
-              <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
+          {auth.id ? (
+            <Box id='nav' sx={{display:'flex', justifyContent:'space-between'}}>
+              <Box id = 'tabs' sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
                 {pages.map((page) => (
                   <Button
                     key={page}
@@ -160,7 +160,7 @@ const NavBar = () => {
                   ))}
                 </Menu>
               </Box>
-            </div>
+            </Box>
           ) : null}
         </Toolbar>
       </Container>
