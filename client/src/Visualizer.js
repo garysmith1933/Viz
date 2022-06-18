@@ -65,9 +65,6 @@ const directions = [-1, 1, -1, 1, -1]
 let windowWidth = myp5.windowWidth
 let windowheight = myp5.windowHeight
 
-
-
-
 const topSpeeds = [
   //slowest
   [1.4, 0.6, 0.8, 1, 0.6],
@@ -82,11 +79,11 @@ const topSpeeds = [
 ]
 
 const getCurrentSpeed = () => {
-  if (selectedSpeed === 0) return 'slowest'
-  if (selectedSpeed === 1) return 'slower'
-  if (selectedSpeed === 2) return 'normal'
-  if (selectedSpeed === 3) return 'faster'
-  if (selectedSpeed === 4) return 'fastest'
+  if (selectedSpeed === 0) return 'Slowest'
+  if (selectedSpeed === 1) return 'Slower'
+  if (selectedSpeed === 2) return 'Normal'
+  if (selectedSpeed === 3) return 'Faster'
+  if (selectedSpeed === 4) return 'Fastest'
 }
  
 const Visualizer = () => {
@@ -109,6 +106,22 @@ const Visualizer = () => {
   const draw = (p) => {
     //sets the background color of canvas
     p.background("black")
+
+    //Tells the user the current speed setting when music is playing
+    p.push()
+    p.fill('white')
+    p.textSize(12)
+    p.text('Current Max Speed Setting', 100,12)
+    p.text(currentSpeed, 100,40)
+    p.pop()
+
+    //Tells the user the current color theme being used
+    p.push()
+    p.fill('white')
+    p.textSize(12)
+    p.text('Current Color Theme', windowWidth-200,12)
+    p.text(colors[colorTheme].label, windowWidth-200,40)
+    p.pop()
 
     //moves canvas to center
     p.translate(p.width/2, p.height/2)
@@ -286,7 +299,7 @@ const Visualizer = () => {
         <Instructions />
    
         
-        <div>
+        {/* <div>
           <FormControl sx={{ m: 1, minWidth: 100 }}>
             <InputLabel id="color-theme">Color Theme</InputLabel>
             <Select
@@ -304,10 +317,7 @@ const Visualizer = () => {
               }
             </Select>
           </FormControl>
-        </div>
-        <Typography id="instruction" variant="h6" component="h2">
-                        Current Speed: {currentSpeed}
-        </Typography>
+        </div> */}
       </Box>
 
       
