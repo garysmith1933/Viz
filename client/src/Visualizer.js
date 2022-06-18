@@ -1,7 +1,15 @@
 import React, { useState, useEffect } from 'react'
 import Sketch from 'react-p5';
 import 'p5/lib/addons/p5.sound';
-
+import Instructions from './Instructions';
+import Box from '@mui/material/Box';
+import { useTheme } from '@mui/material/styles';
+import OutlinedInput from '@mui/material/OutlinedInput';
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+import Select from '@mui/material/Select';
+import Typography from '@mui/material/Typography';
 //IMPORTANT: Each array has a length of 5, the order is treble, lowmid, mid, highmid, bass
 
 // W key = Reverse direction of where the diamonds are currently going
@@ -16,9 +24,37 @@ const P5 = Object.getPrototypeOf(myp5).constructor
 
 let currentSound;
 let fft;
+
+//color palette 
+const colors = [
+  //Considering setting the ones thats not the base to be color templates based on the tempo of the song, ex: engergetic, slow.. Not sure. Feel free to play around with them -GS
+
+    {label:'Default', color: ['#ffbe0b','#fb5607','#ff006e','#8338ec','#3a86ff']},
+
+    {label:'Colorful and Balanced', color: ['#E27D60','#85DCB','#E8A87C','#C38D9E','#41B3A3']},
+
+    {label:'Bright Accent Colors', color: ["#242582","#553D67",'#F64C72', '#99738E', '#2F2FA2']},
+
+    {label:'Natural and Earthy', color: ["#8D8741","#659DBD",'#DAAD86', '#BC986A', '#FBEEC1']},
+  
+    {label:'Cheerful and Energetic', color: ["#FBE8A6","#F4976C",'#303C6C', '#B4DFE5', '#D2FDFF']},
+
+    {label:'Artsy and Creative', color: ["#D79922","#EFE2BA",'#F13C20', '#4056A1', '#C5CBE3']},
+
+    {label:'Clean and Energetic', color: ["#5680E9","#84CEEB",'#5AB9EA', '#C1C8E4', '#8860D0']},
+
+    {label:'Vibrant and Elegant', color: ["#F8E9A1","#F76C6C",'#A8D0E6', '#374785', '#24305E']},
+
+    {label:'Bright Pink and Pastels', color: ["#A1C3D1","#B39BC8",'#F0EBF4', '#F172A1', '#E64398']},
+    //Rich and Colorful
+    {label:'Rich and Colorful', color: ["#F78888","#F3D250",'#ECECEC', '#90CCF4', '#5DA2D5']},
+  
+]
+
 //if you try to make this one variable, they will all move in unison, we dont want that.
 let angles = [45, 45, 45, 45, 45]
-let selectedPalette = 0
+let selectedTheme = colors[5]
+let selectedPalette = selectedTheme.color
 let selectedSpeed = 2
   
 // Circle's radius
@@ -32,24 +68,7 @@ let windowWidth = myp5.windowWidth
 let windowheight = myp5.windowHeight
 
 
-//color palette 
-const colors = [
-//Considering setting the ones thats not the base to be color templates based on the tempo of the song, ex: engergetic, slow.. Not sure. Feel free to play around with them -GS
-  //Base - I ll fight over this one
-  ['#ffbe0b','#fb5607','#ff006e','#8338ec','#3a86ff'],
 
-  //Something random
-  ['#0d3b66','#faf0ca','f4d35e','#ee964b','#f95738'],
-
-  //Earthy somewhat
-  ['#264653','#2a9d8f','#e9c46a','#f4a261','#e76f51'],
-
-  //Not sold on this one
-  ['#231942','#5e548e','#9f86c0','#be95c4','#e0b1cb'],
-
-  //Cotton Candy
-  ["#cdb4db","#ffc8dd",'#ffafcc', '#bde0fe', '#a2d2ff']
-]
 
 const topSpeeds = [
   //slowest
@@ -65,6 +84,8 @@ const topSpeeds = [
 ]
 
 
+
+
 const getCurrentSpeed = () => {
   if (selectedSpeed === 0) return 'slowest'
   if (selectedSpeed === 1) return 'slower'
@@ -77,6 +98,7 @@ const getCurrentSpeed = () => {
 const Visualizer = () => {
   const [audio, setAudio] = useState('')
   const [currentSpeed, setCurrentSpeed] = useState(getCurrentSpeed())
+  const [colorCombination, setColorCombination] = useState(0)
 
   // function that is passed to the sketch component as a prop
   const setup = (p, canvasParentRef) => {
@@ -84,6 +106,10 @@ const Visualizer = () => {
     fft = new P5.FFT()
     p.frameRate(120)
   }
+
+  const handleChange = (event) => {
+    setColorCombination(event.target.value);
+  };
 
     //function that is passed to the sketch component as a prop
   const draw = (p) => {
@@ -170,7 +196,7 @@ const Visualizer = () => {
     //for every 2 degrees moved place a diamond 
     for (let a = 0; a < p.radians(12); a+=p.radians(2)) {
       //Makes diamonds instances 
-      const diamond = new Diamond(x,y,a, sizes[current], p.color(colors[selectedPalette][current]), speeds[current], directions[current])
+      const diamond = new Diamond(x,y,a, sizes[current], p.color(colors[colorCombination].color[current]), speeds[current], directions[current])
       //this is what draws the diamonds
       diamond.draw(a)
     }
@@ -252,7 +278,43 @@ const Visualizer = () => {
 
   return (
     <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center',}}>
-      <h1>{currentSpeed}</h1>
+      <Box sx={{
+        display:'flex',
+        flexDirection:'row',
+        justifyContent:'space-around',
+        alignItems:'center',
+        width:'100%'
+      }}>
+        
+
+        <Instructions />
+   
+        
+        <div>
+          <FormControl sx={{ m: 1, minWidth: 100 }}>
+            <InputLabel id="color-theme">Color Theme</InputLabel>
+            <Select
+              labelId="color-theme"
+              id="color-theme"
+              value={colorCombination}
+              onChange={handleChange}
+              autoWidth
+              label="colorTheme"
+            >
+              {
+                colors.map((colorTheme,index)=>{
+                  return(<MenuItem value ={index}>{colorTheme.label}</MenuItem>)
+                })
+              }
+            </Select>
+          </FormControl>
+        </div>
+        <Typography id="instruction" variant="h6" component="h2">
+                        Current Speed: {currentSpeed}
+        </Typography>
+      </Box>
+
+      
       <div>
         <Sketch setup={setup} draw={draw} preload={preload} mouseClicked={mouseClicked} windowResized={windowResized} keyPressed={keyPresses}/>
       </div>
