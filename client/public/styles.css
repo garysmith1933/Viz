@@ -3,27 +3,33 @@
     background-color: black;
   }
 
+  #music-upload-input {
+    display: none;
+}
+
   #play-button {
-    height: 50px;
-    border: 1px solid red;
+    height: 55px;
+    border: 1px solid blue;
     border-radius: 5px;
     padding: 1rem; 
     font-weight: bold;
     color: white;
     background-color: black;
+    margin-right: 2rem;
+    width:130px;
   }
 
-  #music-upload-input {
-    display: none;
-}
-
 .music-upload-button {
-    border: 1px solid #ccc;
+    border: 1px solid blue;
     border-radius: 5px;
     padding: 1rem;
     color: white;
     font-weight: bold;
-    display: block;
-    /* margin-right: 1rem; */
+    margin-left: 2rem;
 }
+
+.music-upload-button:hover {
+  background-color: blue;
+}
+
 /* need to add hover colors to buttons */
