@@ -171,6 +171,10 @@ const Visualizer = () => {
             p.vertex(0, -this.size);
             p.vertex(-this.size, 0);
           p.endShape(p.CLOSE);
+
+
+          //this is what it looks like if they were circles... yall want this as an option? 
+          // p.circle(0,0,this.size)
         p.pop()
       }
     }
