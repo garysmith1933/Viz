@@ -10,7 +10,7 @@ app.use(express.json());
 app.use(express.static(path.join(__dirname, 'client/build')));
 
 //middleware stating if /api comes in send it to the folder api it will hit the index file which will route it
-app.use('/api', require('../api'));
+app.use('/api', require('./api'));
 
 app.get('/', (req, res) => {
   res.send('Hello World the server is running :(');
