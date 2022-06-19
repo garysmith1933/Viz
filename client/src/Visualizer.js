@@ -279,35 +279,31 @@ const Visualizer = () => {
   }    
 
   return (
-    <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center',}}>
+    <>
       <Box sx={{
         display:'flex',
-        flexDirection:'row',
-        justifyContent:'space-around',
-        alignItems:'center',
+        justifyContent:'center',
         width:'100%'
       }}>
         <Instructions />
       </Box>
 
-      
-      <div>
+      <div style={{display:'flex', justifyContent:'center'}}>
         <Sketch setup={setup} draw={draw} preload={preload} windowResized={windowResized} keyPressed={keyPresses}/>
       </div>
 
-      <div style={{display: 'flex', justifyContent:'space-around'}}>
-     
-        <label class="music-upload-button">
+      <div style={{display: 'flex', justifyContent: 'space-evenly'}}>
+        
+        <label className="music-upload-button">
           <input id='music-upload-input' type="file" name="file" accept="audio/*" onChange={(event) => {
             setAudio(event.target.files[0])}
           }/>
             Upload a track
         </label>
    
-       
         <button id='play-button' onClick={mouseClicked}> Play / Pause </button>
       </div>
-    </div>
+    </>
     ) 
 }
 
