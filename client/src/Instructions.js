@@ -42,14 +42,31 @@ const Instructions = () => {
                 >
                     <Fade in={open}>
                     <Box sx={style}>
-                        <Typography id="instruction" variant="h6" component="h2">
-                        Instruction
+                        <Typography id="instruction" variant="h4" component="h2">
+                        What you need to know
+                        </Typography>
+
+
+                       {/* I believe this should be moved to either a tab in the navbar on maybe on the landing page somewhere, what do yall think? */}
+                       <Typography id="instruction" variant="h6" component="h2" style={{marginTop: '1rem'}}>
+                        How does it work? 
+                            <Typography id='instruction-text' sx={{mt: 2}}>
+                                When a song is playing the diamonds speed and size will vary based on the freqency each diamond represent. 
+                                The inner most diamonds represents the treble frequency, followed by lowMid, mid, highmid, and the outer most diamonds representing the bass frequency.
+                                The higher the amplitude of that frequency, the faster and bigger the diamond representing it will be, constantly varying as the song goes on! 
+                                Try different songs and see how the diamonds will react!
+                            </Typography>
+                        </Typography>
+                       
+
+                        <Typography id="instruction" variant="h6" component="h2" style={{marginTop: '1rem'}}>
+                        Key Features
                         </Typography>
                         <Typography id="instruction-text" sx={{ mt: 2 }}>
-                        Press the A key to increase the speed of the diamonds.
+                        Pressing the A key to increases the speed of the diamonds.
                         </Typography>
                         <Typography id="instruction-text" sx={{ mt: 2 }}>
-                        Press the S key to increase the speed of the diamonds.
+                        Pressing the S key to decreases the speed of the diamonds.
                         </Typography>
                         <Typography id="instruction-text" sx={{ mt: 2 }}>
                         Press the W key to rotate the direction of diamonds.

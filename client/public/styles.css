@@ -19,6 +19,10 @@
     width:130px;
   }
 
+  #play-button:hover {
+    background-color: blue;
+  }
+
 .music-upload-button {
     border: 1px solid blue;
     border-radius: 5px;
