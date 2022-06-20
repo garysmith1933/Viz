@@ -15,7 +15,7 @@ import AdbIcon from '@mui/icons-material/Adb';
 import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
-const pages = ['Your Saved Song', 'Upload'];
+const pages = ['Playlist', 'Upload'];
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 
 const NavBar = () => {
