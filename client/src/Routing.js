@@ -3,7 +3,7 @@ import { Routes, Route } from 'react-router-dom';
 import Upload from './Upload/Upload';
 import Visualizer from './Visualizer';
 import SpotifyLogin from './Spotify';
-import Playlist from './Playlist'
+import Playlist from './components/SavedSong'
 
 //import { useSelector } from 'react-redux';
 
