@@ -11,6 +11,11 @@ import {
   Grid,
   IconButton,
   Tooltip,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle
 } from '@mui/material';
 import AudioFileIcon from '@mui/icons-material/AudioFile';
 
@@ -18,8 +23,23 @@ const Upload = () => {
   const [selectedFile, setSelectedFile] = useState();
   const image = 'https://i.ytimg.com/vi/LdeDIwzN0zU/maxresdefault.jpg';
   const [img, setImg] = useState(image);
-
+  const [open,setOpen] = useState(false)
   //this is when the file is selected
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleAgree = () => {
+    setOpen(false);
+  };
+
+  const handleDisagree = () => {
+    setOpen(false);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
   const handleCapture = ({ target }) => {
     setSelectedFile(target.files[0]);
 
@@ -31,10 +51,10 @@ const Upload = () => {
   //this is when the file is saved
   const handleSubmit = async (ev) => {
     ev.preventDefault();
-
+    
     //get secure url from out server
     const { data } = await axios.get('/api/s3url');
-
+    handleClickOpen();
     // post the image directley to the s3 bucket
     //post request to my server to store extra data
     //Send from front end to server backend. Backend sends back url
@@ -111,6 +131,25 @@ const Upload = () => {
             </Button>
           </form>
         </Grid>
+        <Dialog
+          open={open}
+          onClose={handleClose}
+        >
+          <DialogTitle id="song-save-alert">
+            {"Wanna save this song to your playlist?"}
+          </DialogTitle>
+          <DialogContent>
+            <DialogContentText >
+              Save this song to your playlist so that you can access anytime.
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleDisagree}>Disagree</Button>
+            <Button onClick={handleAgree}>
+              Agree
+            </Button>
+          </DialogActions>
+        </Dialog>
       </Grid>
     </Container>
   );
