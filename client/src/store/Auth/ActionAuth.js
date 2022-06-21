@@ -25,6 +25,7 @@ export const me = () => async (dispatch) => {
   }
 };
 
+//need to make sure deleted
 export const lsAuthenticate = (payload) => {
   return async (dispatch) => {
     try {
