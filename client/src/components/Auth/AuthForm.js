@@ -8,7 +8,7 @@ import {
   Paper,
 } from '@mui/material';
 import { useDispatch } from 'react-redux';
-import { signIn_signUp } from '../../store';
+import { signIn_signUp, lsAuthenticate } from '../../store';
 import getGoogleOAuthURL from './getGoogleUrl';
 import { useParams } from 'react-router-dom';
 
@@ -46,10 +46,14 @@ const Login = () => {
     if (id) {
       setToken(id);
       localStorage.setItem('token', token);
-      console.log('hello');
     }
-    console.log('nope');
-  }, [token]);
+  }, [id, token]);
+
+  useEffect(() => {
+    if (ls) {
+      dispatch(lsAuthenticate({ token, lsAuthenticate: true }));
+    }
+  }, [ls, token]);
 
   useEffect(() => {
     userRef.current.focus();

@@ -21,7 +21,7 @@ const Routing = () => {
     <>
       {auth.id ? (
         <Routes>
-          <Route path='/' element={<Visualizer />} />
+          <Route path='/:id' element={<Visualizer />} />
           <Route path='/Upload' element={<Upload />} />
           <Route path='/spotify' element={<SpotifyLogin />} />
           <Route path='/playlist' element={<Playlist />} />
@@ -37,3 +37,20 @@ const Routing = () => {
 };
 
 export default Routing;
+{
+  /* <>
+      {auth.id ? (
+        <Routes>
+          <Route path='/' element={<Visualizer />} />
+          <Route path='/Upload' element={<Upload />} />
+          <Route path='/spotify' element={<SpotifyLogin />} />
+          <Route path='/playlist' element={<Playlist />} />
+        </Routes>
+      ) : (
+        <Routes>
+          <Route path='/' element={<Login />} />
+          <Route path='/:id' element={<Login />} />
+        </Routes>
+      )}
+    </> */
+}
