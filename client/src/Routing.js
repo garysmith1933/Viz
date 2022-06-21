@@ -3,9 +3,13 @@ import { Routes, Route } from 'react-router-dom';
 import Upload from './Upload/Upload';
 import Visualizer from './Visualizer';
 import SpotifyLogin from './Spotify';
-import Playlist from './Playlist';
+
+
 import Login from './components/Auth/AuthForm';
 import { useSelector } from 'react-redux';
+
+import Playlist from './components/SavedSong'
+
 
 //import { useSelector } from 'react-redux';
 

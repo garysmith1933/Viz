@@ -1,0 +1,39 @@
+
+.bg-black {
+    background-color: black;
+  }
+
+  #music-upload-input {
+    display: none;
+}
+
+  #play-button {
+    height: 55px;
+    border: 1px solid blue;
+    border-radius: 5px;
+    padding: 1rem; 
+    font-weight: bold;
+    color: white;
+    background-color: black;
+    margin-right: 2rem;
+    width:130px;
+  }
+
+  #play-button:hover {
+    background-color: blue;
+  }
+
+.music-upload-button {
+    border: 1px solid blue;
+    border-radius: 5px;
+    padding: 1rem;
+    color: white;
+    font-weight: bold;
+    margin-left: 2rem;
+}
+
+.music-upload-button:hover {
+  background-color: blue;
+}
+
+/* need to add hover colors to buttons */

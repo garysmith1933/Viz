@@ -3,19 +3,8 @@ import Sketch from 'react-p5';
 import 'p5/lib/addons/p5.sound';
 import Instructions from './Instructions';
 import Box from '@mui/material/Box';
-import { useTheme } from '@mui/material/styles';
-import OutlinedInput from '@mui/material/OutlinedInput';
-import InputLabel from '@mui/material/InputLabel';
-import MenuItem from '@mui/material/MenuItem';
-import FormControl from '@mui/material/FormControl';
-import Select from '@mui/material/Select';
-import Typography from '@mui/material/Typography';
-//IMPORTANT: Each array has a length of 5, the order is treble, lowmid, mid, highmid, bass
 
-// W key = Reverse direction of where the diamonds are currently going
-//A key = increases the top speed of diamonds when a song is playing by a set amount
-//S key = decreases the top speed of diamonds when a song is playing by a set amount
-// Enter key = Cycles through colors! 
+//IMPORTANT: Each array has a length of 5, the order is treble, lowmid, mid, highmid, bass
 
 // react-p5 has this so we can use p5 methods outside of draw, and set up.
 const myp5 = new window.p5()
@@ -27,7 +16,6 @@ let fft;
 
 //color palette 
 const colors = [
-  //Considering setting the ones thats not the base to be color templates based on the tempo of the song, ex: engergetic, slow.. Not sure. Feel free to play around with them -GS
 
     {label:'Default', color: ['#ffbe0b','#fb5607','#ff006e','#8338ec','#3a86ff']},
 
@@ -48,13 +36,11 @@ const colors = [
     {label:'Bright Pink and Pastels', color: ["#A1C3D1","#B39BC8",'#F0EBF4', '#F172A1', '#E64398']},
     //Rich and Colorful
     {label:'Rich and Colorful', color: ["#F78888","#F3D250",'#ECECEC', '#90CCF4', '#5DA2D5']},
-  
+
 ]
 
 //if you try to make this one variable, they will all move in unison, we dont want that.
 let angles = [45, 45, 45, 45, 45]
-let selectedTheme = colors[5]
-let selectedPalette = selectedTheme.color
 let selectedSpeed = 2
   
 // Circle's radius
@@ -66,9 +52,6 @@ const numOfCircles = 5
 const directions = [-1, 1, -1, 1, -1]
 let windowWidth = myp5.windowWidth
 let windowheight = myp5.windowHeight
-
-
-
 
 const topSpeeds = [
   //slowest
@@ -83,22 +66,18 @@ const topSpeeds = [
   [3.8, 1.4, 3.2, 2.8, 1.4]
 ]
 
-
-
-
 const getCurrentSpeed = () => {
-  if (selectedSpeed === 0) return 'slowest'
-  if (selectedSpeed === 1) return 'slower'
-  if (selectedSpeed === 2) return 'normal'
-  if (selectedSpeed === 3) return 'faster'
-  if (selectedSpeed === 4) return 'fastest'
-  // return 'normal'
+  if (selectedSpeed === 0) return 'Slowest'
+  if (selectedSpeed === 1) return 'Slower'
+  if (selectedSpeed === 2) return 'Normal'
+  if (selectedSpeed === 3) return 'Faster'
+  if (selectedSpeed === 4) return 'Fastest'
 }
  
 const Visualizer = () => {
   const [audio, setAudio] = useState('')
   const [currentSpeed, setCurrentSpeed] = useState(getCurrentSpeed())
-  const [colorCombination, setColorCombination] = useState(0)
+  const [colorTheme, setColorTheme] = useState(0)
 
   // function that is passed to the sketch component as a prop
   const setup = (p, canvasParentRef) => {
@@ -107,14 +86,26 @@ const Visualizer = () => {
     p.frameRate(120)
   }
 
-  const handleChange = (event) => {
-    setColorCombination(event.target.value);
-  };
-
     //function that is passed to the sketch component as a prop
   const draw = (p) => {
     //sets the background color of canvas
     p.background("black")
+
+    //Tells the user the current speed setting when music is playing
+    p.push()
+    p.fill('white')
+    p.textSize(12)
+    p.text('Current Max Speed Setting', 100,12)
+    p.text(currentSpeed, 100,40)
+    p.pop()
+
+    //Tells the user the current color theme being used
+    p.push()
+    p.fill('white')
+    p.textSize(12)
+    p.text('Current Color Theme', windowWidth-200,12)
+    p.text(colors[colorTheme].label, windowWidth-200,40)
+    p.pop()
 
     //moves canvas to center
     p.translate(p.width/2, p.height/2)
@@ -180,6 +171,10 @@ const Visualizer = () => {
             p.vertex(0, -this.size);
             p.vertex(-this.size, 0);
           p.endShape(p.CLOSE);
+
+
+          //this is what it looks like if they were circles... yall want this as an option? 
+          // p.circle(0,0,this.size)
         p.pop()
       }
     }
@@ -196,7 +191,8 @@ const Visualizer = () => {
     //for every 2 degrees moved place a diamond 
     for (let a = 0; a < p.radians(12); a+=p.radians(2)) {
       //Makes diamonds instances 
-      const diamond = new Diamond(x,y,a, sizes[current], p.color(colors[colorCombination].color[current]), speeds[current], directions[current])
+
+      const diamond = new Diamond(x,y,a, sizes[current], p.color(colors[colorTheme].color[current]), speeds[current], directions[current])
       //this is what draws the diamonds
       diamond.draw(a)
     }
@@ -221,6 +217,15 @@ const Visualizer = () => {
     }
     preload()
   },[audio])
+
+  //makes the background completely black and removes it when we leave the page
+  useEffect(()  => {
+    document.body.classList.add('bg-black');
+
+    return () => {
+        document.body.classList.remove('bg-black');
+    };
+},[]);
 
     const keyPresses = () => {
       // adds speed, press a 
@@ -248,13 +253,14 @@ const Visualizer = () => {
        
        // Cycles color palette by pressing enter key
       if (myp5.keyCode === 13) {   
+        console.log(colorTheme)
         //if we are on the last palette
-        if(selectedPalette === 4)  {
+        if(colorTheme === 9)  {
           //reset the cycle
-          selectedPalette = 0;
+          setColorTheme(0)
           return;
         }          
-          selectedPalette++
+          setColorTheme(colorTheme+1)
       }
       return false; 
     }
@@ -277,55 +283,31 @@ const Visualizer = () => {
   }    
 
   return (
-    <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center',}}>
+    <>
       <Box sx={{
         display:'flex',
-        flexDirection:'row',
-        justifyContent:'space-around',
-        alignItems:'center',
+        justifyContent:'center',
         width:'100%'
       }}>
-        
-
         <Instructions />
-   
-        
-        <div>
-          <FormControl sx={{ m: 1, minWidth: 100 }}>
-            <InputLabel id="color-theme">Color Theme</InputLabel>
-            <Select
-              labelId="color-theme"
-              id="color-theme"
-              value={colorCombination}
-              onChange={handleChange}
-              autoWidth
-              label="colorTheme"
-            >
-              {
-                colors.map((colorTheme,index)=>{
-                  return(<MenuItem value ={index}>{colorTheme.label}</MenuItem>)
-                })
-              }
-            </Select>
-          </FormControl>
-        </div>
-        <Typography id="instruction" variant="h6" component="h2">
-                        Current Speed: {currentSpeed}
-        </Typography>
       </Box>
 
-      
-      <div>
-        <Sketch setup={setup} draw={draw} preload={preload} mouseClicked={mouseClicked} windowResized={windowResized} keyPressed={keyPresses}/>
+      <div style={{display:'flex', justifyContent:'center'}}>
+        <Sketch setup={setup} draw={draw} preload={preload} windowResized={windowResized} keyPressed={keyPresses}/>
       </div>
 
-      <div style={{display: 'flex', justifyContent:'space-around'}}>
-        <input type="file" name="file" accept="audio/*" onChange={(event) => {
-          setAudio(event.target.files[0])}
-        }/>
-        <button> Play </button>
+      <div style={{display: 'flex', justifyContent: 'space-evenly'}}>
+        
+        <label className="music-upload-button">
+          <input id='music-upload-input' type="file" name="file" accept="audio/*" onChange={(event) => {
+            setAudio(event.target.files[0])}
+          }/>
+            Upload a track
+        </label>
+   
+        <button id='play-button' onClick={mouseClicked}> Play / Pause </button>
       </div>
-    </div>
+    </>
     ) 
 }
 
