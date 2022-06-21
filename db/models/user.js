@@ -14,7 +14,25 @@ const User = db.define('user', {
   password: {
     type: DataTypes.STRING,
   },
+  oauth: {
+    type: DataTypes.STRING,
+    unique: true,
+  },
 });
+
+User.byGoogle = async (googleEmail, given_name) => {
+  const user = await User.findOne({
+    where: { oauth: googleEmail },
+  });
+  if (!user) {
+    const createUser = await User.create({
+      oauth: googleEmail,
+      firstName: given_name,
+    });
+    return createUser;
+  }
+  return user;
+};
 
 User.signUp = async ({ username, pwd, firstName, lastName }) => {
   try {
