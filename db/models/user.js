@@ -1,3 +1,5 @@
+const jwt = require('jsonwebtoken');
+
 const { db, DataTypes } = require('../db');
 
 const User = db.define('user', {
@@ -47,6 +49,22 @@ User.signUp = async ({ username, pwd, firstName, lastName }) => {
   } catch (error) {
     console.log(error);
   }
+};
+
+User.findbyTOken = async (token) => {
+  console.log('User.findbyTOken');
+  console.log('token  ' + token);
+  try {
+    const { id } = jwt.verify(token, process.env.JWT);
+    console.log('id  ' + id);
+    const user = id && (await User.findByPk(id));
+    if (!user) {
+      const data = { deleteLocalStorage: true };
+      return data;
+    }
+    console.log('Findbypk user   ' + user);
+    return user;
+  } catch (error) {}
 };
 
 User.signIn = async ({ username, pwd }) => {

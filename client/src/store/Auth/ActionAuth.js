@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { SET_AUTHORIZATION } from '../types';
-
+import { useHistory } from 'react-router-dom';
 const TOKEN = 'token';
 
 const SET_AUTH = 'SET_AUTH';
@@ -23,6 +23,24 @@ export const me = () => async (dispatch) => {
       },
     });
   }
+};
+
+export const lsAuthenticate = (payload) => {
+  return async (dispatch) => {
+    try {
+      const { data } = await axios.post('/api/auth', payload);
+      console.log({ data });
+      if (data.deleteLocalStorage) {
+        console.log('deleting local storage');
+        localStorage.setItem('token', '');
+        return;
+      }
+      console.log('this is ls authenticate data' + data.id);
+      dispatch(_signIn_signUp(data));
+    } catch (error) {
+      localStorage.setItem('token', '');
+    }
+  };
 };
 
 export function authenticate(username, password, method, email) {
