@@ -1,3 +1,5 @@
+//db.js
+
 const { Sequelize, DataTypes } = require('sequelize');
 
 //DB Logs
