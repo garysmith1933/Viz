@@ -1,5 +1,5 @@
 const { Sequelize, DataTypes } = require('sequelize');
-const User = require('./models/user')
+
 
 //DB Logs
 const logging = { logging: false };
