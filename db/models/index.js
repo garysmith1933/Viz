@@ -5,7 +5,7 @@ const Song = require('./songs')
 Beat.belongsTo(User);
 User.hasMany(Beat);
 
-// Playlist.hasMany(Song)
-// Song.belongsToMany(Playlist)
+Playlist.hasMany(Song)
+Song.belongsTo(Playlist)
 
 module.exports = { Beat, User };
