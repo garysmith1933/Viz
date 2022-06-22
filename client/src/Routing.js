@@ -2,9 +2,6 @@ import React from 'react';
 import { Routes, Route } from 'react-router-dom';
 import Upload from './Upload/Upload';
 import Visualizer from './Visualizer';
-import SpotifyLogin from './Spotify';
-
-
 import Login from './components/Auth/AuthForm';
 import { useSelector } from 'react-redux';
 
@@ -23,7 +20,6 @@ const Routing = () => {
         <Routes>
           <Route path='/:id' element={<Visualizer />} />
           <Route path='/Upload' element={<Upload />} />
-          <Route path='/spotify' element={<SpotifyLogin />} />
           <Route path='/playlist' element={<Playlist />} />
         </Routes>
       ) : (
@@ -43,7 +39,6 @@ export default Routing;
         <Routes>
           <Route path='/' element={<Visualizer />} />
           <Route path='/Upload' element={<Upload />} />
-          <Route path='/spotify' element={<SpotifyLogin />} />
           <Route path='/playlist' element={<Playlist />} />
         </Routes>
       ) : (
