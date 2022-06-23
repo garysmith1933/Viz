@@ -35,13 +35,7 @@ const Login = () => {
   const [error, setError] = useState(null);
   const [token, setToken] = useState(null);
   const ls = localStorage.getItem('token');
-  console.log({ ls });
 
-  // if (ls) {
-  //   setToken(id);
-  //   console.log('hello ');
-  //   localStorage.setItem('token', token);
-  // }
   useEffect(() => {
     if (id) {
       setToken(id);
@@ -50,10 +44,11 @@ const Login = () => {
   }, [id, token]);
 
   useEffect(() => {
-    if (ls) {
+    if (token) {
+      console.log(token);
       dispatch(lsAuthenticate({ token, lsAuthenticate: true }));
     }
-  }, [ls, token]);
+  }, [token]);
 
   useEffect(() => {
     userRef.current.focus();
