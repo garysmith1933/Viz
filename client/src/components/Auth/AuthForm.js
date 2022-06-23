@@ -34,7 +34,6 @@ const Login = () => {
   const [signUp, setSignUp] = useState(false);
   const [error, setError] = useState(null);
   const [token, setToken] = useState(null);
-  const ls = localStorage.getItem('token');
 
   useEffect(() => {
     if (id) {
@@ -45,7 +44,6 @@ const Login = () => {
 
   useEffect(() => {
     if (token) {
-      console.log(token);
       dispatch(lsAuthenticate({ token, lsAuthenticate: true }));
     }
   }, [token]);

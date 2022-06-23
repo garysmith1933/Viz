@@ -13,15 +13,17 @@ import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
 import { Link } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { logout } from '../store';
 
-const pages = ['Playlist', 'Upload'];
+const pages = ['Playlist', 'Upload', 'Logout'];
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 
 const NavBar = () => {
+  const dispatch = useDispatch();
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
-  
+
   const auth = useSelector((state) => state.authorizeReducer.auth);
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -36,6 +38,10 @@ const NavBar = () => {
 
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
+  };
+
+  const handleLogout = () => {
+    dispatch(logout());
   };
 
   return (
@@ -117,8 +123,14 @@ const NavBar = () => {
             LOGO
           </Typography>
           {auth.id ? (
-            <Box id='nav' sx={{display:'flex', justifyContent:'space-between'}}>
-              <Box id = 'tabs' sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
+            <Box
+              id='nav'
+              sx={{ display: 'flex', justifyContent: 'space-between' }}
+            >
+              <Box
+                id='tabs'
+                sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}
+              >
                 {pages.map((page) => (
                   <Button
                     key={page}

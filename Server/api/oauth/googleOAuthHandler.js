@@ -29,40 +29,12 @@ const googleOAuthHandler = async (req, res) => {
     jwt.decode(id_token);
   if (email_verified === true) {
     const userInfo = await User.byGoogle(email, given_name);
-    console.log('UserINFO');
-    console.log(userInfo.id);
+
     const jwtToken = jwt.sign({ id: userInfo.id }, process.env.JWT);
     return jwtToken;
-    // res.send(`
-    // <html>
-    //   <head>
-    //     <script>
-    //       window.localStorage.setItem('token', '${jwtToken}')
-    //       window.document.location = '/'
-    //     </script>
-    //   </head>
-    // </html>
-    // `);
-    //return 'Emial is verified';
   } else {
     return ' Email is not verified use another please';
   }
-  //console.log(email, email_verified, name, picture);
-  //const googleUserId = jwt.decode(access_token);
-  //console.log({ access_token });
-  //console.log({ data });
-
-  //upsert the user
-
-  //create a session
-
-  // create access & refresh tokens
-
-  //set cookies
-
-  // redirect back to client
-
-  //return 'Hello user this is from google auth ';
 };
 
 //Send code back to google to verify its you and google sends user info back

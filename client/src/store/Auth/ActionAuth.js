@@ -68,7 +68,7 @@ export function authenticate(username, password, method, email) {
 export const logout = () => async (dispatch) => {
   window.localStorage.removeItem(TOKEN);
 
-  dispatch(setAuth({}));
+  dispatch(_signIn_signUp(''));
 };
 
 export const signIn_signUp = (payload) => {
