@@ -1,7 +1,6 @@
 import axios from 'axios';
-import { SET_AUTHORIZATION } from '../types';
+import { SET_AUTHORIZATION, TOKEN } from '../types';
 import { useHistory } from 'react-router-dom';
-const TOKEN = 'token';
 
 const SET_AUTH = 'SET_AUTH';
 
@@ -67,13 +66,9 @@ export function authenticate(username, password, method, email) {
 }
 
 export const logout = () => async (dispatch) => {
-  const res = await axios.get('/auth/logout', {
-    withCredentials: true,
-  });
-
   window.localStorage.removeItem(TOKEN);
 
-  dispatch(setAuth({}));
+  dispatch(_signIn_signUp(''));
 };
 
 export const signIn_signUp = (payload) => {
