@@ -23,7 +23,6 @@ const User = db.define('user', {
 });
 
 User.byGoogle = async (googleEmail, given_name) => {
-  console.log('User.byGoogle ran');
   const user = await User.findOne({
     where: { oauth: googleEmail },
   });
@@ -38,7 +37,6 @@ User.byGoogle = async (googleEmail, given_name) => {
 };
 
 User.signUp = async ({ username, pwd, firstName, lastName }) => {
-  console.log('User.signUp ran');
   try {
     const user = await User.create({
       username,
@@ -46,7 +44,6 @@ User.signUp = async ({ username, pwd, firstName, lastName }) => {
       firstName,
       lastName,
     });
-    console.log('This is the create user ' + user.username);
     return user;
   } catch (error) {
     console.log(error);
@@ -54,14 +51,10 @@ User.signUp = async ({ username, pwd, firstName, lastName }) => {
 };
 
 User.findbyTOken = async (token) => {
-  console.log('User.findbyTOken ran');
-  console.log('token  ' + token);
   try {
     const { id } = jwt.verify(token, process.env.JWT);
-    console.log('id  ' + id);
     const user = id && (await User.findByPk(id));
     if (!user) {
-      console.log('!user ran');
       const data = { deleteLocalStorage: true };
       return data;
     }
@@ -79,7 +72,6 @@ User.signIn = async ({ username, pwd }) => {
         password: pwd,
       },
     });
-    console.log('this is the findone ' + user);
     return user;
   } catch (error) {
     console.log(error);
