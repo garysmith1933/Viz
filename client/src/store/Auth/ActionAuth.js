@@ -24,19 +24,14 @@ export const me = () => async (dispatch) => {
   }
 };
 
-//need to make sure deleted
 export const lsAuthenticate = (payload) => {
-  console.log('ls auth ran' + payload.token);
   return async (dispatch) => {
     try {
       const { data } = await axios.post('/api/auth', payload);
-      console.log({ data });
       if (data.deleteLocalStorage) {
-        console.log('deleting local storage');
         localStorage.setItem('token', '');
         return;
       }
-      console.log('this is ls authenticate data' + data.id);
       dispatch(_signIn_signUp(data));
     } catch (error) {
       localStorage.setItem('token', '');
@@ -76,7 +71,6 @@ export const signIn_signUp = (payload) => {
     try {
       const { data } = await axios.post('/api/auth', payload);
 
-      console.log('this is from actions ' + JSON.stringify(data, null, 2));
       if (data != null) {
         dispatch(_signIn_signUp(data));
       }

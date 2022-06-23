@@ -58,14 +58,11 @@ const Login = () => {
 
   const handleSubmit = async (e) => {
     const payload = { username, pwd, signUp, firstName, lastName };
-    console.log(payload);
     e.preventDefault();
 
     const data = await dispatch(signIn_signUp(payload));
     if (data) {
-      console.log('you have data');
     } else if (!data && signUp) {
-      console.log('you dont have data');
       setError('PICK ANOTHER USERNAME');
     } else if (data === null && !signUp) {
       setError('BAD PASSWORD AND OR USERNAME');
@@ -76,7 +73,6 @@ const Login = () => {
     setSignUp(!signUp);
   };
 
-  //console.log(id);
   return (
     <>
       {success ? (
