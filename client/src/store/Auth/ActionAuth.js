@@ -27,6 +27,7 @@ export const me = () => async (dispatch) => {
 
 //need to make sure deleted
 export const lsAuthenticate = (payload) => {
+  console.log('ls auth ran' + payload.token);
   return async (dispatch) => {
     try {
       const { data } = await axios.post('/api/auth', payload);
