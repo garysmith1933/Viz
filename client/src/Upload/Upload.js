@@ -15,15 +15,19 @@ import {
   DialogActions,
   DialogContent,
   DialogContentText,
-  DialogTitle
+  DialogTitle,
 } from '@mui/material';
 import AudioFileIcon from '@mui/icons-material/AudioFile';
+import { useDispatch } from 'react-redux';
+import { addBeat } from '../store';
 
 const Upload = () => {
+  const dispatch = useDispatch();
+
   const [selectedFile, setSelectedFile] = useState();
   const image = 'https://i.ytimg.com/vi/LdeDIwzN0zU/maxresdefault.jpg';
   const [img, setImg] = useState(image);
-  const [open,setOpen] = useState(false)
+  const [open, setOpen] = useState(false);
   //this is when the file is selected
   const handleClickOpen = () => {
     setOpen(true);
@@ -51,7 +55,7 @@ const Upload = () => {
   //this is when the file is saved
   const handleSubmit = async (ev) => {
     ev.preventDefault();
-    
+
     //get secure url from out server
     const { data } = await axios.get('/api/s3url');
     handleClickOpen();
@@ -63,9 +67,16 @@ const Upload = () => {
         'Content-Type': 'multipart/form-data',
       },
     };
-
+    //axios.put(url, data)
     const { config } = await axios.put(data, selectedFile, configuration);
-    setImg(config.url.split('?')[0]);
+
+    console.log('this is the audio file');
+    const audioUrl = config.url.split('?')[0];
+    const token = window.localStorage.getItem('token');
+    const payload = { token, audioUrl };
+    console.log(audioUrl);
+    //setImg(config.url.split('?')[0]);
+    dispatch(addBeat(payload));
   };
 
   return (
@@ -106,7 +117,7 @@ const Upload = () => {
           <form id='songUploadForm' onSubmit={(ev) => handleSubmit(ev)}>
             <input
               style={{ display: 'none' }}
-              accept='image/*'
+              accept='audio/*'
               id='songUpload'
               type='file'
               onChange={handleCapture}
@@ -131,23 +142,18 @@ const Upload = () => {
             </Button>
           </form>
         </Grid>
-        <Dialog
-          open={open}
-          onClose={handleClose}
-        >
-          <DialogTitle id="song-save-alert">
-            {"Wanna save this song to your playlist?"}
+        <Dialog open={open} onClose={handleClose}>
+          <DialogTitle id='song-save-alert'>
+            {'Wanna save this song to your playlist?'}
           </DialogTitle>
           <DialogContent>
-            <DialogContentText >
+            <DialogContentText>
               Save this song to your playlist so that you can access anytime.
             </DialogContentText>
           </DialogContent>
           <DialogActions>
             <Button onClick={handleDisagree}>Disagree</Button>
-            <Button onClick={handleAgree}>
-              Agree
-            </Button>
+            <Button onClick={handleAgree}>Agree</Button>
           </DialogActions>
         </Dialog>
       </Grid>

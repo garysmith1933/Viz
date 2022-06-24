@@ -17,10 +17,6 @@ const getGoogleOAuthURL = () => {
   };
 
   const qs = new URLSearchParams(options);
-  //console.log(qs);
-  //console.log(qs.toString());
-  //console.log(`${rootUrl}?${qs.toString()}`);
-  //console.log({ options });
   return `${rootUrl}?${qs.toString()}`;
 };
 

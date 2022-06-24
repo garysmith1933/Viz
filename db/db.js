@@ -1,4 +1,7 @@
+//db.js
+
 const { Sequelize, DataTypes } = require('sequelize');
+
 
 //DB Logs
 const logging = { logging: false };

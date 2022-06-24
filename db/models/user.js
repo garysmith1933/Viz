@@ -1,3 +1,7 @@
+const jwt = require('jsonwebtoken');
+const bcrypt = require('bcrypt');
+const SALT_ROUNDS = 5;
+
 const { db, DataTypes } = require('../db');
 
 const User = db.define('user', {
@@ -14,20 +18,56 @@ const User = db.define('user', {
   password: {
     type: DataTypes.STRING,
   },
+  oauth: {
+    type: DataTypes.STRING,
+    unique: true,
+  },
 });
 
+User.byGoogle = async (googleEmail, given_name) => {
+  const user = await User.findOne({
+    where: { oauth: googleEmail },
+  });
+  if (!user) {
+    const createUser = await User.create({
+      oauth: googleEmail,
+      firstName: given_name,
+    });
+    return createUser;
+  }
+  return user;
+};
+
 User.signUp = async ({ username, pwd, firstName, lastName }) => {
+  const password = await bcrypt.hash(pwd, SALT_ROUNDS);
   try {
-    const user = await User.create({
+    let user = await User.create({
       username,
-      password: pwd,
+      password,
       firstName,
       lastName,
     });
-    console.log('This is the create user ' + user.username);
-    return user;
+    const jwtToken = jwt.sign({ id: user.id }, process.env.JWT);
+
+    const payload = { jwtToken, user };
+
+    return payload;
   } catch (error) {
     console.log(error);
+  }
+};
+
+User.findbyTOken = async (token) => {
+  try {
+    const { id } = jwt.verify(token, process.env.JWT);
+    const user = id && (await User.findByPk(id));
+    if (!user) {
+      const data = { deleteLocalStorage: true };
+      return data;
+    }
+    return user;
+  } catch (error) {
+    console.log('User.findByToken Error  ' + error);
   }
 };
 
@@ -39,7 +79,6 @@ User.signIn = async ({ username, pwd }) => {
         password: pwd,
       },
     });
-    console.log('this is the findone ' + user);
     return user;
   } catch (error) {
     console.log(error);

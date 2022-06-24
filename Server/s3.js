@@ -20,10 +20,10 @@ const s3 = new aws.S3({
 
 async function generateUploadURL() {
   const rawBytes = await randomBytes(16);
-  const imageName = rawBytes.toString('hex');
+  const fileName = rawBytes.toString('hex') + 'capstone.mp3';
   const params = {
     Bucket: bucketName,
-    Key: imageName,
+    Key: fileName,
     Expires: 60,
   };
   const uploadUrl = await s3.getSignedUrlPromise('putObject', params);
@@ -31,26 +31,3 @@ async function generateUploadURL() {
 }
 
 module.exports = generateUploadURL;
-
-/*
-{
-  "Id": "Policy1648829452621",
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Sid": "Stmt1648829450063",
-      "Action": [
-        "s3:GetObject"
-      ],
-      "Effect": "Allow",
-      "Resource": "arn:aws:s3:::${everizon-test-bucket}",
-      "Principal": "*"
-    }
-  ]
-}
-*/
-
-/*
-access AKIASTETGUZ4IQWHRK7U
-secret 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
-*/

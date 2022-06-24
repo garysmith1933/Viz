@@ -1,25 +1,16 @@
 import { useRef, useState, useEffect } from 'react';
 import {
   Button,
-  Typography,
   FormControl,
-  FormControlLabel,
   Input,
   InputLabel,
-  InputAdornment,
-  Checkbox,
   Grid,
   Paper,
-  Avatar,
-  IconButton,
 } from '@mui/material';
 import { useDispatch } from 'react-redux';
-import { signIn_signUp } from '../../store';
+import { signIn_signUp, lsAuthenticate } from '../../store';
 import getGoogleOAuthURL from './getGoogleUrl';
-
-//import Link from '@mui/material/Link';
-// or
-import { Link } from '@mui/material';
+import { useParams } from 'react-router-dom';
 
 const paperStyle = {
   padding: 20,
@@ -32,6 +23,7 @@ const Login = () => {
   const userRef = useRef();
   const errRef = useRef();
   const dispatch = useDispatch();
+  const { id } = useParams();
 
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
@@ -41,6 +33,20 @@ const Login = () => {
   const [success, setSuccess] = useState(false);
   const [signUp, setSignUp] = useState(false);
   const [error, setError] = useState(null);
+  const [token, setToken] = useState(null);
+
+  useEffect(() => {
+    if (id) {
+      setToken(id);
+      localStorage.setItem('token', token);
+    }
+  }, [id, token]);
+
+  useEffect(() => {
+    if (token) {
+      dispatch(lsAuthenticate({ token, lsAuthenticate: true }));
+    }
+  }, [token]);
 
   useEffect(() => {
     userRef.current.focus();
@@ -52,14 +58,12 @@ const Login = () => {
 
   const handleSubmit = async (e) => {
     const payload = { username, pwd, signUp, firstName, lastName };
-    console.log(payload);
+    console.log({ payload });
     e.preventDefault();
 
     const data = await dispatch(signIn_signUp(payload));
     if (data) {
-      console.log('you have data');
     } else if (!data && signUp) {
-      console.log('you dont have data');
       setError('PICK ANOTHER USERNAME');
     } else if (data === null && !signUp) {
       setError('BAD PASSWORD AND OR USERNAME');
@@ -194,7 +198,7 @@ const Login = () => {
                     {signUp ? <p>Sign In</p> : <p>Sign Up</p>}
                   </Button>
                   <Button href={getGoogleOAuthURL()}>
-                    {signUp ? <p>Google Login</p> : <p>Google Sign Up</p>}
+                    {signUp ? <p>Google Sign Up</p> : <p>Google Login</p>}
                   </Button>
                 </span>
               </div>

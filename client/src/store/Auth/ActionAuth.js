@@ -1,7 +1,5 @@
 import axios from 'axios';
-import { SET_AUTHORIZATION } from '../types';
-
-const TOKEN = 'token';
+import { SET_AUTHORIZATION, TOKEN } from '../types';
 
 const SET_AUTH = 'SET_AUTH';
 
@@ -14,6 +12,17 @@ const _signIn_signUp = (payload) => {
   };
 };
 
+export const addBeat = (payload) => {
+  return async (dispatch) => {
+    try {
+      const response = await axios.post('/api/s3url', payload);
+      console.log(response);
+    } catch (error) {
+      console.log('this is the addbeat error   ' + error);
+    }
+  };
+};
+
 export const me = () => async (dispatch) => {
   const token = window.localStorage.getItem(TOKEN);
   if (token) {
@@ -23,6 +32,22 @@ export const me = () => async (dispatch) => {
       },
     });
   }
+};
+
+export const lsAuthenticate = (payload) => {
+  return async (dispatch) => {
+    try {
+      const { data } = await axios.post('/api/auth', payload);
+      if (data.deleteLocalStorage) {
+        localStorage.setItem('token', '');
+        return;
+      }
+      console.log(data);
+      dispatch(_signIn_signUp(data));
+    } catch (error) {
+      localStorage.setItem('token', '');
+    }
+  };
 };
 
 export function authenticate(username, password, method, email) {
@@ -47,26 +72,25 @@ export function authenticate(username, password, method, email) {
 }
 
 export const logout = () => async (dispatch) => {
-  const res = await axios.get('/auth/logout', {
-    withCredentials: true,
-  });
-
   window.localStorage.removeItem(TOKEN);
 
-  dispatch(setAuth({}));
+  dispatch(_signIn_signUp(''));
 };
 
 export const signIn_signUp = (payload) => {
   return async (dispatch) => {
     try {
-      const { data } = await axios.post('/api/auth', payload);
-
-      console.log('this is from actions ' + JSON.stringify(data, null, 2));
-      if (data != null) {
-        dispatch(_signIn_signUp(data));
+      const {
+        data: { jwtToken, user },
+      } = await axios.post('/api/auth', payload);
+      console.log(user);
+      console.log(jwtToken);
+      if (user != null) {
+        dispatch(_signIn_signUp(user));
+        window.localStorage.setItem('token', jwtToken);
       }
 
-      return data;
+      return user;
     } catch (error) {
       console.log('dispatch error ' + error);
     }
