@@ -32,6 +32,7 @@ export const lsAuthenticate = (payload) => {
         localStorage.setItem('token', '');
         return;
       }
+      console.log(data);
       dispatch(_signIn_signUp(data));
     } catch (error) {
       localStorage.setItem('token', '');
@@ -69,13 +70,17 @@ export const logout = () => async (dispatch) => {
 export const signIn_signUp = (payload) => {
   return async (dispatch) => {
     try {
-      const { data } = await axios.post('/api/auth', payload);
-
-      if (data != null) {
-        dispatch(_signIn_signUp(data));
+      const {
+        data: { jwtToken, user },
+      } = await axios.post('/api/auth', payload);
+      console.log(user);
+      console.log(jwtToken);
+      if (user != null) {
+        dispatch(_signIn_signUp(user));
+        window.localStorage.setItem('token', jwtToken);
       }
 
-      return data;
+      return user;
     } catch (error) {
       console.log('dispatch error ' + error);
     }

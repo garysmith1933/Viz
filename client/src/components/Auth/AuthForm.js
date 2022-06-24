@@ -58,6 +58,7 @@ const Login = () => {
 
   const handleSubmit = async (e) => {
     const payload = { username, pwd, signUp, firstName, lastName };
+    console.log({ payload });
     e.preventDefault();
 
     const data = await dispatch(signIn_signUp(payload));
