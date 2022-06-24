@@ -26,7 +26,7 @@ const Instructions = () => {
   return (
     <div style={{ padding: '1.5rem' }}>
       <div>
-        <Button onClick={handleOpen}>How To Use Visualizer</Button>
+        <Button onClick={handleOpen} style={{color: 'white'}}>Guide</Button>
         <Modal
           aria-labelledby='transition-modal-title'
           aria-describedby='transition-modal-description'
