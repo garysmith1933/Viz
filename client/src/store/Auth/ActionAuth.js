@@ -1,6 +1,5 @@
 import axios from 'axios';
 import { SET_AUTHORIZATION, TOKEN } from '../types';
-import { useHistory } from 'react-router-dom';
 
 const SET_AUTH = 'SET_AUTH';
 
@@ -10,6 +9,17 @@ const _signIn_signUp = (payload) => {
   return {
     type: SET_AUTHORIZATION,
     payload,
+  };
+};
+
+export const addBeat = (payload) => {
+  return async (dispatch) => {
+    try {
+      const response = await axios.post('/api/s3url', payload);
+      console.log(response);
+    } catch (error) {
+      console.log('this is the addbeat error   ' + error);
+    }
   };
 };
 

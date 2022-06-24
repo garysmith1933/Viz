@@ -18,8 +18,12 @@ import {
   DialogTitle,
 } from '@mui/material';
 import AudioFileIcon from '@mui/icons-material/AudioFile';
+import { useDispatch } from 'react-redux';
+import { addBeat } from '../store';
 
 const Upload = () => {
+  const dispatch = useDispatch();
+
   const [selectedFile, setSelectedFile] = useState();
   const image = 'https://i.ytimg.com/vi/LdeDIwzN0zU/maxresdefault.jpg';
   const [img, setImg] = useState(image);
@@ -65,10 +69,14 @@ const Upload = () => {
     };
     //axios.put(url, data)
     const { config } = await axios.put(data, selectedFile, configuration);
+
     console.log('this is the audio file');
     const audioUrl = config.url.split('?')[0];
+    const token = window.localStorage.getItem('token');
+    const payload = { token, audioUrl };
     console.log(audioUrl);
     //setImg(config.url.split('?')[0]);
+    dispatch(addBeat(payload));
   };
 
   return (

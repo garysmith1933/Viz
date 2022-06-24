@@ -1,6 +1,7 @@
+const jwt = require('jsonwebtoken');
 const { db, DataTypes } = require('../db');
 
-const beat = db.define('beat', {
+const Beat = db.define('beat', {
   name: {
     type: DataTypes.STRING,
   },
@@ -9,4 +10,17 @@ const beat = db.define('beat', {
   },
 });
 
-module.exports = beat;
+Beat.addBeat = async ({ token, audioUrl }) => {
+  const { id } = jwt.verify(token, process.env.JWT);
+  if (id) {
+    const response = Beat.create({
+      userId: id,
+      name: 'beat',
+      url: audioUrl,
+    });
+    return response;
+  }
+  return null;
+};
+
+module.exports = Beat;
