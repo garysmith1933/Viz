@@ -36,4 +36,9 @@
   background-color: blue;
 }
 
+a {
+  text-decoration: none;
+}
+
+
 /* need to add hover colors to buttons */

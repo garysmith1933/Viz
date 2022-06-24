@@ -7,17 +7,14 @@ import Typography from '@mui/material/Typography';
 import Menu from '@mui/material/Menu';
 import MenuIcon from '@mui/icons-material/Menu';
 import Container from '@mui/material/Container';
-import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
-import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import { Link } from 'react-router-dom';
 import AlbumIcon from '@mui/icons-material/Album';
 import { useDispatch, useSelector } from 'react-redux';
 import { logout } from '../store';
 
-const pages = ['Your Saved Song', 'Upload', 'Logout'];
-const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
+const pages = ['Songs you saved', 'Upload', 'Logout'];
 
 const NavBar = () => {
   const dispatch = useDispatch();
@@ -25,19 +22,13 @@ const NavBar = () => {
   const [anchorElUser, setAnchorElUser] = React.useState(null);
 
   const auth = useSelector((state) => state.authorizeReducer.auth);
+  
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
-  };
-  const handleOpenUserMenu = (event) => {
-    setAnchorElUser(event.currentTarget);
   };
 
   const handleCloseNavMenu = () => {
     setAnchorElNav(null);
-  };
-
-  const handleCloseUserMenu = () => {
-    setAnchorElUser(null);
   };
 
   const handleLogout = () => {
@@ -60,10 +51,8 @@ const NavBar = () => {
             sx={{
               mr: 2,
               display: { xs: 'none', md: 'flex' },
-              fontFamily: 'monospace',
               fontSize: 30,
               fontWeight:700,
-              letterSpacing: '.3rem',
               color: 'white',
               textDecoration: 'none',
             }}
@@ -126,10 +115,10 @@ const NavBar = () => {
           >
             Audio
           </Typography>
-          {auth.id ? (
+  
             <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' },alignItems:'center' }}>
-              <Box id = 'tabs' sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
 
+              <Box id = 'tabs' sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
                 {pages.map((page) => (
                   <Link to={page}>
                     <Button
@@ -143,37 +132,8 @@ const NavBar = () => {
                 ))}
               </Box>
 
-              <Box id='avatar' sx={{ flexGrow: 0 }}>
-                <Tooltip title='Open settings'>
-                  <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                    <Avatar alt='CapStone' src='' sx={{width:56, height:56}}/>
-                  </IconButton>
-                </Tooltip>
-                <Menu
-                  sx={{ mt: '45px' }}
-                  id='menu-appbar'
-                  anchorEl={anchorElUser}
-                  anchorOrigin={{
-                    vertical: 'top',
-                    horizontal: 'right',
-                  }}
-                  keepMounted
-                  transformOrigin={{
-                    vertical: 'top',
-                    horizontal: 'right',
-                  }}
-                  open={Boolean(anchorElUser)}
-                  onClose={handleCloseUserMenu}
-                >
-                  {settings.map((setting) => (
-                    <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                      <Typography textAlign='center'>{setting}</Typography>
-                    </MenuItem>
-                  ))}
-                </Menu>
-              </Box>
             </Box>
-          ) : null}
+         
         </Toolbar>
       </Container>
     </AppBar>
