@@ -11,13 +11,26 @@ import '@fontsource/roboto/300.css';
 import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
 
+let theme = createTheme({
+  palette: {
+    primary: {
+      main: '#000000',
+    },
+    secondary: {
+      main: '#edf2ff',
+    },
+  },
+});
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <Provider store={store}>
       <BrowserRouter>
+        <ThemeProvider theme={theme}>
         <App />
-    </BrowserRouter>
+        </ThemeProvider>
+      </BrowserRouter>
   </Provider>
 
 );

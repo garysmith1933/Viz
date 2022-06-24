@@ -11,12 +11,12 @@ import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
-import AdbIcon from '@mui/icons-material/Adb';
 import { Link } from 'react-router-dom';
+
+import AlbumIcon from '@mui/icons-material/Album';
+const pages = ['Your Saved Song', 'Upload', 'Logout'];
 import { useDispatch, useSelector } from 'react-redux';
 import { logout } from '../store';
-
-const pages = ['Playlist', 'Upload', 'Logout'];
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 
 const NavBar = () => {
@@ -45,10 +45,13 @@ const NavBar = () => {
   };
 
   return (
-    <AppBar position='static'>
+    <AppBar position='static' color="primary" sx={{
+      borderWidth:'0px 0px 2px 0px',
+      borderStyle:'solid'
+    }}>
       <Container maxWidth='xl'>
         <Toolbar disableGutters>
-          <AdbIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} />
+          <AlbumIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1,fontSize: 60 }} />
           <Typography
             variant='h6'
             noWrap
@@ -58,15 +61,15 @@ const NavBar = () => {
               mr: 2,
               display: { xs: 'none', md: 'flex' },
               fontFamily: 'monospace',
-              fontWeight: 700,
+              fontSize: 30,
+              fontWeight:700,
               letterSpacing: '.3rem',
-              color: 'inherit',
+              color: 'white',
               textDecoration: 'none',
             }}
           >
-            LOGO
+            Audio
           </Typography>
-
           <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
             <IconButton
               size='large'
@@ -98,12 +101,12 @@ const NavBar = () => {
             >
               {pages.map((page) => (
                 <MenuItem key={page} onClick={handleCloseNavMenu}>
-                  <Typography textAlign='center'>{page}</Typography>
+                    <Typography textAlign="center">{page}</Typography>
                 </MenuItem>
               ))}
             </Menu>
           </Box>
-          <AdbIcon sx={{ display: { xs: 'flex', md: 'none' }, mr: 1 }} />
+          <AlbumIcon sx={{ display: { xs: 'flex', md: 'none' }, mr: 1, fontSize: 60 }} />
           <Typography
             variant='h5'
             noWrap
@@ -114,39 +117,36 @@ const NavBar = () => {
               display: { xs: 'flex', md: 'none' },
               flexGrow: 1,
               fontFamily: 'monospace',
+              fontSize: 30,
               fontWeight: 700,
               letterSpacing: '.3rem',
               color: 'inherit',
               textDecoration: 'none',
             }}
           >
-            LOGO
+            Audio
           </Typography>
           {auth.id ? (
-            <Box
-              id='nav'
-              sx={{ display: 'flex', justifyContent: 'space-between' }}
-            >
-              <Box
-                id='tabs'
-                sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}
-              >
+            <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' },alignItems:'center' }}>
+              <Box id = 'tabs' sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
+
                 {pages.map((page) => (
-                  <Button
-                    key={page}
-                    onClick={handleCloseNavMenu}
-                    sx={{ my: 2, color: 'white', display: 'block' }}
-                  >
-                    {/* {page} */}
-                    <Link to={page}>{page}</Link>
-                  </Button>
+                  <Link to={page}>
+                    <Button
+                      key={page}
+                      onClick={handleCloseNavMenu}
+                      sx={{ my: 2, color: 'white', display: 'block', fontSize:20, marginTop:'1.5rem' }}
+                    >                   
+                        {page}                    
+                    </Button>
+                  </Link>
                 ))}
               </Box>
 
               <Box id='avatar' sx={{ flexGrow: 0 }}>
                 <Tooltip title='Open settings'>
                   <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                    <Avatar alt='CapStone' src='' />
+                    <Avatar alt='CapStone' src='' sx={{width:56, height:56}}/>
                   </IconButton>
                 </Tooltip>
                 <Menu
