@@ -118,7 +118,7 @@ const Visualizer = () => {
   //function that is passed to the sketch component as a prop
   const draw = (p) => {
     //sets the background color of canvas
-    p.background('black');
+    p.background('#090909');
 
     //Tells the user the current speed setting when music is playing
     p.push();
@@ -343,7 +343,7 @@ const Visualizer = () => {
         />
       </div>
 
-      <div style={{ display: 'flex', justifyContent: 'space-evenly' }}>
+      <div style={{ display: 'flex', justifyContent: 'space-evenly', backgroundColor: '#090909' }}>
         <label id='music-upload-button'>
           <input
             id='music-upload-input'
