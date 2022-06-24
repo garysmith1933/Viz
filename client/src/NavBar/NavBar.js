@@ -12,11 +12,11 @@ import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import { Link } from 'react-router-dom';
-
 import AlbumIcon from '@mui/icons-material/Album';
-const pages = ['Your Saved Song', 'Upload', 'Logout'];
 import { useDispatch, useSelector } from 'react-redux';
 import { logout } from '../store';
+
+const pages = ['Your Saved Song', 'Upload', 'Logout'];
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 
 const NavBar = () => {
