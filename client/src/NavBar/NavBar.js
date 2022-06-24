@@ -51,13 +51,13 @@ const NavBar = () => {
             sx={{
               mr: 2,
               display: { xs: 'none', md: 'flex' },
-              fontSize: 30,
+              fontSize: 25,
               fontWeight:700,
               color: 'white',
               textDecoration: 'none',
             }}
           >
-            Audio
+            VIZ
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
             <IconButton
@@ -124,7 +124,7 @@ const NavBar = () => {
                     <Button
                       key={page}
                       onClick={handleCloseNavMenu}
-                      sx={{ my: 2, color: 'white', display: 'block', fontSize:20, marginTop:'1.5rem' }}
+                      sx={{ my: 2, color: 'white', display: 'block', fontSize:12, marginTop:'1.5rem' }}
                     >                   
                         {page}                    
                     </Button>

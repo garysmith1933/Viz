@@ -106,6 +106,7 @@ const Visualizer = () => {
   const [audio, setAudio] = useState('');
   const [currentSpeed, setCurrentSpeed] = useState(getCurrentSpeed());
   const [colorTheme, setColorTheme] = useState(0);
+  const [songStatus, setSongStatus] = useState('Play');
 
   // function that is passed to the sketch component as a prop
   const setup = (p, canvasParentRef) => {
@@ -221,34 +222,22 @@ const Visualizer = () => {
     //sets the circle rings..that you cant see!
     for (let j = 1; j <= numOfCircles; j++) {
       let current = j - 1;
-      //once upon a time there was circles being drawn here
-
+  
       //polar to cartesian coordinates, basically..this is where our diamond drawing will begin and how it moves around!
       const x = radius * radiusMultiplier[current] * p.cos(angles[current]);
       const y = radius * radiusMultiplier[current] * p.sin(angles[current]);
 
       //for every 2 degrees moved place a diamond
       for (let a = 0; a < p.radians(12); a += p.radians(2)) {
-        //Makes diamonds instances
 
-        const diamond = new Diamond(
-          x,
-          y,
-          a,
-          sizes[current],
-          p.color(colors[colorTheme].color[current]),
-          speeds[current],
-          directions[current]
-        );
-        //this is what draws the diamonds
+        //Makes diamonds instances
+        const diamond = new Diamond(x, y, a, sizes[current], p.color(colors[colorTheme].color[current]), speeds[current], directions[current]);
+        //calls the draw method to make the diamonds
         diamond.draw(a);
       }
 
       //if the diamonds of the current circle being drawn have a direction of one, go one way, else go the other way
-      angles[j - 1] +=
-        directions[current] === 1
-          ? p.radians(speeds[current])
-          : p.radians(-speeds[current]);
+      angles[j - 1] += directions[current] === 1 ? p.radians(speeds[current]) : p.radians(-speeds[current]);
     }
   };
 
@@ -324,9 +313,11 @@ const Visualizer = () => {
     if (currentSound.isPlaying()) {
       if (currentSound) {
         currentSound.pause();
+        setSongStatus('Paused')
       }
     } else {
       currentSound.play();
+      setSongStatus('Playing')
     }
   };
 
@@ -353,7 +344,7 @@ const Visualizer = () => {
       </div>
 
       <div style={{ display: 'flex', justifyContent: 'space-evenly' }}>
-        <label className='music-upload-button'>
+        <label id='music-upload-button'>
           <input
             id='music-upload-input'
             type='file'
@@ -367,8 +358,7 @@ const Visualizer = () => {
         </label>
 
         <button id='play-button' onClick={mouseClicked}>
-          {' '}
-          Play / Pause{' '}
+            {songStatus}
         </button>
       </div>
     </>
