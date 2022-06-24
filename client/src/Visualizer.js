@@ -110,7 +110,7 @@ const Visualizer = () => {
 
   // function that is passed to the sketch component as a prop
   const setup = (p, canvasParentRef) => {
-    p.createCanvas(windowWidth, windowheight).parent(canvasParentRef);
+    p.createCanvas(windowWidth, 800).parent(canvasParentRef);
     fft = new P5.FFT();
     p.frameRate(120);
   };

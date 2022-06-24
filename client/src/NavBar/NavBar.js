@@ -14,7 +14,7 @@ import AlbumIcon from '@mui/icons-material/Album';
 import { useDispatch, useSelector } from 'react-redux';
 import { logout } from '../store';
 
-const pages = ['Songs you saved', 'Upload', 'Logout'];
+
 
 const NavBar = () => {
   const dispatch = useDispatch();
@@ -22,6 +22,7 @@ const NavBar = () => {
   const [anchorElUser, setAnchorElUser] = React.useState(null);
 
   const auth = useSelector((state) => state.authorizeReducer.auth);
+  const pages = !auth.id ? ['Songs you saved', 'Upload', 'Login'] : ['Songs you saved', 'Upload', 'Logout']
   
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
