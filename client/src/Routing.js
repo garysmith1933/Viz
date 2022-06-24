@@ -15,6 +15,7 @@ const Routing = () => {
     <>
       {auth.id ? (
         <Routes>
+          <Route path='/' element={<Navigate replace to='/visualizer' />} />
           <Route path='/:id' element={<Navigate replace to='/visualizer' />} />
           <Route path='/Upload' element={<Upload />} />
           <Route path='/Logout' element={<Logout />} />
@@ -24,7 +25,8 @@ const Routing = () => {
       ) : (
         <Routes>
           <Route path='/' element={<Login />} />
-          <Route path='/Logout' element={<Login />} />
+          {/* <Route path='/Logout' element={<Login />} /> */}
+          <Route path='/Logout' element={<Navigate replace to='/' />} />
           <Route path='/:id' element={<Login />} />
         </Routes>
       )}

@@ -1,4 +1,6 @@
 const jwt = require('jsonwebtoken');
+const bcrypt = require('bcrypt');
+const SALT_ROUNDS = 5;
 
 const { db, DataTypes } = require('../db');
 
@@ -37,14 +39,19 @@ User.byGoogle = async (googleEmail, given_name) => {
 };
 
 User.signUp = async ({ username, pwd, firstName, lastName }) => {
+  const password = await bcrypt.hash(pwd, SALT_ROUNDS);
   try {
-    const user = await User.create({
+    let user = await User.create({
       username,
-      password: pwd,
+      password,
       firstName,
       lastName,
     });
-    return user;
+    const jwtToken = jwt.sign({ id: user.id }, process.env.JWT);
+
+    const payload = { jwtToken, user };
+
+    return payload;
   } catch (error) {
     console.log(error);
   }
