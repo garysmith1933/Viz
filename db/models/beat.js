@@ -23,4 +23,16 @@ Beat.addBeat = async ({ token, audioUrl }) => {
   return null;
 };
 
+Beat.getBeats = async (payload) => {
+  const { id } = jwt.verify(payload, process.env.JWT);
+  if (id) {
+    const response = await Beat.findAll({
+      where: { userId: id },
+    });
+    console.log('This is the beat  ' + response);
+    return response;
+  }
+  return null;
+};
+
 module.exports = Beat;

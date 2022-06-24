@@ -16,7 +16,7 @@ import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { logout } from '../store';
 
-const pages = ['Playlist', 'Upload', 'Logout'];
+const pages = ['Visualizer', 'Upload', 'Logout'];
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 
 const NavBar = () => {
@@ -63,9 +63,7 @@ const NavBar = () => {
               color: 'inherit',
               textDecoration: 'none',
             }}
-          >
-            LOGO
-          </Typography>
+          ></Typography>
 
           <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
             <IconButton
@@ -97,8 +95,18 @@ const NavBar = () => {
               }}
             >
               {pages.map((page) => (
-                <MenuItem key={page} onClick={handleCloseNavMenu}>
-                  <Typography textAlign='center'>{page}</Typography>
+                <MenuItem
+                  sx={{ textDecoration: 'none' }}
+                  key={page}
+                  onClick={handleCloseNavMenu}
+                >
+                  <Typography
+                    sx={{ textDecoration: 'none' }}
+                    textAlign='center'
+                    variant='p'
+                  >
+                    {page}
+                  </Typography>
                 </MenuItem>
               ))}
             </Menu>
@@ -135,10 +143,17 @@ const NavBar = () => {
                   <Button
                     key={page}
                     onClick={handleCloseNavMenu}
-                    sx={{ my: 2, color: 'white', display: 'block' }}
+                    sx={{
+                      my: 2,
+                      color: 'white',
+                      display: 'block',
+                      textDecoration: 'none',
+                    }}
                   >
                     {/* {page} */}
-                    <Link to={page}>{page}</Link>
+                    <Link sx={{ textDecoration: 'none' }} to={page}>
+                      {page}
+                    </Link>
                   </Button>
                 ))}
               </Box>
@@ -146,7 +161,7 @@ const NavBar = () => {
               <Box id='avatar' sx={{ flexGrow: 0 }}>
                 <Tooltip title='Open settings'>
                   <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                    <Avatar alt='CapStone' src='' />
+                    {/* <Avatar alt='CapStone' src='' /> */}
                   </IconButton>
                 </Tooltip>
                 <Menu

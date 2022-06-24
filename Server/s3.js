@@ -27,6 +27,7 @@ async function generateUploadURL() {
     Expires: 60,
   };
   const uploadUrl = await s3.getSignedUrlPromise('putObject', params);
+  console.log('this is the url   ', uploadUrl);
   return uploadUrl;
 }
 
