@@ -14,7 +14,6 @@
     padding: 0.8rem;
     color: white;
     font-weight: bold;
-    margin-left: 2rem;
     cursor: pointer;
     background-size: 200%;
     background-image: linear-gradient(to left, #FFC312, #EE5A24, #FFC312 );
@@ -31,7 +30,6 @@
     padding: 1rem; 
     font-weight: bold;
     color: white;
-    margin-right: 2rem;
     width:130px;
     cursor: pointer;
     background-size: 200%;

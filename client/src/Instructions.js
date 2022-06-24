@@ -55,8 +55,8 @@ const Instructions = () => {
                 <Typography id='instruction-text' sx={{ mt: 2 }}>
                   When a song is playing the diamonds speed and size will vary
                   based on the freqency each diamond represent. The inner most
-                  diamonds represents the treble frequency, followed by lowMid,
-                  mid, highmid, and the outer most diamonds representing the
+                  diamonds represents the treble frequency, followed by the low mid frequency,
+                  the mid freqency, the high mid freqency, and the outer most diamonds representing the
                   bass frequency. The higher the amplitude of that frequency,
                   the faster and bigger the diamond representing it will be,
                   constantly varying as the song goes on! Try different songs
