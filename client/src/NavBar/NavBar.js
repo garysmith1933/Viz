@@ -22,7 +22,7 @@ const NavBar = () => {
   const [anchorElUser, setAnchorElUser] = React.useState(null);
 
   const auth = useSelector((state) => state.authorizeReducer.auth);
-  const pages = !auth.id ? ['Songs you saved', 'Upload', 'Login'] : ['Songs you saved', 'Upload', 'Logout']
+  const pages = !auth.id ? [ 'Login'] : ['Visualizer', 'Upload', 'Logout']
   
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -58,9 +58,10 @@ const NavBar = () => {
               color: 'white',
               textDecoration: 'none',
             }}
-          >
-            VIZ
-          </Typography>
+
+          ></Typography>
+
+
           <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
             <IconButton
               size='large'
@@ -91,8 +92,20 @@ const NavBar = () => {
               }}
             >
               {pages.map((page) => (
-                <MenuItem key={page} onClick={handleCloseNavMenu}>
-                    <Typography textAlign="center">{page}</Typography>
+
+                <MenuItem
+                  sx={{ textDecoration: 'none' }}
+                  key={page}
+                  onClick={handleCloseNavMenu}
+                >
+                  <Typography
+                    sx={{ textDecoration: 'none' }}
+                    textAlign='center'
+                    variant='p'
+                  >
+                    {page}
+                  </Typography>
+
                 </MenuItem>
               ))}
             </Menu>
@@ -122,16 +135,53 @@ const NavBar = () => {
 
               <Box id = 'tabs' sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
                 {pages.map((page) => (
-                  <Link to={page}>
-                    <Button
-                      key={page}
-                      onClick={handleCloseNavMenu}
-                      sx={{ my: 2, color: 'white', display: 'block', fontSize:12, marginTop:'1.5rem' }}
-                    >                   
-                        {page}                    
-                    </Button>
-                  </Link>
+
+                  <Button
+                    key={page}
+                    onClick={handleCloseNavMenu}
+                    sx={{
+                      my: 2,
+                      color: 'white',
+                      display: 'block',
+                      textDecoration: 'none',
+                    }}
+                  >
+                    {/* {page} */}
+                    <Link sx={{ textDecoration: 'none' }} to={page}>
+                      {page}
+                    </Link>
+                  </Button>
                 ))}
+              </Box>
+
+              <Box id='avatar' sx={{ flexGrow: 0 }}>
+                <Tooltip title='Open settings'>
+                  <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                    {/* <Avatar alt='CapStone' src='' /> */}
+                  </IconButton>
+                </Tooltip>
+                <Menu
+                  sx={{ mt: '45px' }}
+                  id='menu-appbar'
+                  anchorEl={anchorElUser}
+                  anchorOrigin={{
+                    vertical: 'top',
+                    horizontal: 'right',
+                  }}
+                  keepMounted
+                  transformOrigin={{
+                    vertical: 'top',
+                    horizontal: 'right',
+                  }}
+                  open={Boolean(anchorElUser)}
+                  onClose={handleCloseUserMenu}
+                >
+                  {settings.map((setting) => (
+                    <MenuItem key={setting} onClick={handleCloseUserMenu}>
+                      <Typography textAlign='center'>{setting}</Typography>
+                    </MenuItem>
+                  ))}
+                </Menu>
               </Box>
 
             </Box>

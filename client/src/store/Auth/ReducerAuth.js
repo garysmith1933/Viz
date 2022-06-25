@@ -1,4 +1,4 @@
-const { SET_AUTHORIZATION } = require('../types');
+const { SET_AUTHORIZATION, SET_BEAT } = require('../types');
 
 const initialState = {
   auth: {},
@@ -10,6 +10,8 @@ export const authorizeReducer = (state = initialState, action) => {
       return {
         auth: action.payload,
       };
+    case SET_BEAT:
+      return { ...state, beat: action.payload };
     default:
       return state;
   }

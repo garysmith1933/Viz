@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { SET_AUTHORIZATION, TOKEN } from '../types';
+import { SET_AUTHORIZATION, TOKEN, SET_BEAT } from '../types';
 
 const SET_AUTH = 'SET_AUTH';
 
@@ -11,6 +11,12 @@ const _signIn_signUp = (payload) => {
     payload,
   };
 };
+const _set_beat = (payload) => {
+  return {
+    type: SET_BEAT,
+    payload,
+  };
+};
 
 export const addBeat = (payload) => {
   return async (dispatch) => {
@@ -19,6 +25,28 @@ export const addBeat = (payload) => {
       console.log(response);
     } catch (error) {
       console.log('this is the addbeat error   ' + error);
+    }
+  };
+};
+export const getBeats = (payload) => {
+  console.log(payload);
+
+  return async (dispatch) => {
+    try {
+      const token = window.localStorage.getItem(TOKEN);
+      if (token) {
+        const { data } = await axios.get('/api/s3url/beats', {
+          headers: {
+            authorization: token,
+          },
+        });
+        console.log(data);
+        if (data.length > 0) {
+          dispatch(_set_beat(data));
+        }
+      }
+    } catch (error) {
+      console.log('this is the getbeat error   ' + error);
     }
   };
 };
