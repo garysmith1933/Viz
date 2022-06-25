@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import Upload from './Upload/Upload';
@@ -14,19 +15,15 @@ const Routing = () => {
     <>
       {auth.id ? (
         <Routes>
-          <Route path='/' element={<Navigate replace to='/visualizer' />} />
-          <Route path='/:id' element={<Navigate replace to='/visualizer' />} />
-
-          <Route path='/' element={<Visualizer />} />
+          <Route path='/' element={<Visualizer/>} />
           <Route path='/Upload' element={<Upload />} />
           <Route path='/Logout' element={<Logout />} />
           <Route path='/playlist' element={<Playlist />} />
-          <Route path='/Visualizer' element={<Visualizer />} />
         </Routes>
       ) : (
         <Routes>
+          <Route path='/' element={<Visualizer />} />
           {/* <Route path='/Logout' element={<Login />} /> */}
-          <Route path='/' element={<Login />} />
           <Route path='/Logout' element={<Navigate replace to='/' />} />
           <Route path='/:id' element={<Login />} />
         </Routes>
