@@ -40,7 +40,7 @@ const NavBar = () => {
     <AppBar position='static'sx={{
       borderWidth:'0px 0px 2px 0px',
       borderStyle:'solid',
-      backgroundColor: 'darkred'
+      backgroundImage: 'linear-gradient(to left, #3498db, #e74c3c, #9b59b6 )'
     }}>
       <Container maxWidth='xl'>
         <Toolbar disableGutters>
