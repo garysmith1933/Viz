@@ -46,14 +46,13 @@ const NavBar = () => {
   };
 
   return (
-    <AppBar
-      position='static'
-      sx={{
-        borderWidth: '0px 0px 2px 0px',
-        borderStyle: 'solid',
-        backgroundColor: 'darkred',
-      }}
-    >
+
+    <AppBar position='static'sx={{
+      borderWidth:'0px 0px 2px 0px',
+      borderStyle:'solid',
+      backgroundImage: 'linear-gradient(to left, #3498db, #e74c3c, #9b59b6 )'
+    }}>
+
       <Container maxWidth='xl'>
         <Toolbar disableGutters>
           <AlbumIcon
