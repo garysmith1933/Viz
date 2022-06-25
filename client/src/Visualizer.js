@@ -244,6 +244,7 @@ const Visualizer = () => {
   //sets the currentSound to the audio
   const preload = () => {
     currentSound = myp5.loadSound(audio);
+    currentSound.setVolume(0.2)
   };
 
   //any time audio is changed, run preload
