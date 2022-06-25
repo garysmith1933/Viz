@@ -7,17 +7,14 @@ import Typography from '@mui/material/Typography';
 import Menu from '@mui/material/Menu';
 import MenuIcon from '@mui/icons-material/Menu';
 import Container from '@mui/material/Container';
-import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
-import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
-import AdbIcon from '@mui/icons-material/Adb';
 import { Link } from 'react-router-dom';
+import AlbumIcon from '@mui/icons-material/Album';
 import { useDispatch, useSelector } from 'react-redux';
 import { logout } from '../store';
 
-const pages = ['Visualizer', 'Upload', 'Logout'];
-const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
+
 
 const NavBar = () => {
   const dispatch = useDispatch();
@@ -25,19 +22,14 @@ const NavBar = () => {
   const [anchorElUser, setAnchorElUser] = React.useState(null);
 
   const auth = useSelector((state) => state.authorizeReducer.auth);
+  const pages = !auth.id ? [ 'Login'] : ['Visualizer', 'Upload', 'Logout']
+  
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
-  };
-  const handleOpenUserMenu = (event) => {
-    setAnchorElUser(event.currentTarget);
   };
 
   const handleCloseNavMenu = () => {
     setAnchorElNav(null);
-  };
-
-  const handleCloseUserMenu = () => {
-    setAnchorElUser(null);
   };
 
   const handleLogout = () => {
@@ -45,10 +37,14 @@ const NavBar = () => {
   };
 
   return (
-    <AppBar position='static'>
+    <AppBar position='static'sx={{
+      borderWidth:'0px 0px 2px 0px',
+      borderStyle:'solid',
+      backgroundColor: 'darkred'
+    }}>
       <Container maxWidth='xl'>
         <Toolbar disableGutters>
-          <AdbIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} />
+          <AlbumIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1,fontSize: 60 }} />
           <Typography
             variant='h6'
             noWrap
@@ -57,13 +53,14 @@ const NavBar = () => {
             sx={{
               mr: 2,
               display: { xs: 'none', md: 'flex' },
-              fontFamily: 'monospace',
-              fontWeight: 700,
-              letterSpacing: '.3rem',
-              color: 'inherit',
+              fontSize: 25,
+              fontWeight:700,
+              color: 'white',
               textDecoration: 'none',
             }}
+
           ></Typography>
+
 
           <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
             <IconButton
@@ -95,6 +92,7 @@ const NavBar = () => {
               }}
             >
               {pages.map((page) => (
+
                 <MenuItem
                   sx={{ textDecoration: 'none' }}
                   key={page}
@@ -107,11 +105,12 @@ const NavBar = () => {
                   >
                     {page}
                   </Typography>
+
                 </MenuItem>
               ))}
             </Menu>
           </Box>
-          <AdbIcon sx={{ display: { xs: 'flex', md: 'none' }, mr: 1 }} />
+          <AlbumIcon sx={{ display: { xs: 'flex', md: 'none' }, mr: 1, fontSize: 60 }} />
           <Typography
             variant='h5'
             noWrap
@@ -122,24 +121,21 @@ const NavBar = () => {
               display: { xs: 'flex', md: 'none' },
               flexGrow: 1,
               fontFamily: 'monospace',
+              fontSize: 30,
               fontWeight: 700,
               letterSpacing: '.3rem',
               color: 'inherit',
               textDecoration: 'none',
             }}
           >
-            LOGO
+            Audio
           </Typography>
-          {auth.id ? (
-            <Box
-              id='nav'
-              sx={{ display: 'flex', justifyContent: 'space-between' }}
-            >
-              <Box
-                id='tabs'
-                sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}
-              >
+  
+            <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' },alignItems:'center' }}>
+
+              <Box id = 'tabs' sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
                 {pages.map((page) => (
+
                   <Button
                     key={page}
                     onClick={handleCloseNavMenu}
@@ -187,8 +183,9 @@ const NavBar = () => {
                   ))}
                 </Menu>
               </Box>
+
             </Box>
-          ) : null}
+         
         </Toolbar>
       </Container>
     </AppBar>
