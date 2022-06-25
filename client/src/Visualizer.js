@@ -346,7 +346,7 @@ const Visualizer = () => {
       <div style={{ display: 'flex', justifyContent: 'space-evenly', backgroundColor: '#090909' }}>
         <label id='music-upload-button'>
           <input
-            id='music-upload-input'
+            id='musicInput'
             type='file'
             name='file'
             accept='audio/*'

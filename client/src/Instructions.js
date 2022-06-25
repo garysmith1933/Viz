@@ -73,16 +73,16 @@ const Instructions = () => {
                 Key Features
               </Typography>
               <Typography id='instruction-text' sx={{ mt: 2 }}>
-                Pressing the A key to increases the speed of the diamonds.
+                Pressing the A key will increase the speed of the diamonds.
               </Typography>
               <Typography id='instruction-text' sx={{ mt: 2 }}>
-                Pressing the S key to decreases the speed of the diamonds.
+                Pressing the S key will decrease the speed of the diamonds.
               </Typography>
               <Typography id='instruction-text' sx={{ mt: 2 }}>
-                Press the W key to rotate the direction of diamonds.
+                Pressing the W key will rotate the direction of diamonds.
               </Typography>
               <Typography id='instruction-text' sx={{ mt: 2 }}>
-                Press the Enter key to cycle through our color pallettes of
+                Pressing the Enter key will cycle through our color palettes of
                 diamonds.
               </Typography>
             </Box>
