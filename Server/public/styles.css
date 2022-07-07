@@ -1,0 +1,50 @@
+
+.bg-black {
+    background-color:#090909;
+  }
+
+  #musicInput {
+    display: none;
+  }
+
+#music-upload-button {
+    display: flex;
+    align-items: center;
+    border-radius: 5px;
+    padding: 0.8rem;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    background-size: 200%;
+    background-image: linear-gradient(to left, #FFC312, #EE5A24, #FFC312 );
+    transition: 0.6s;
+}
+
+#music-upload-button:hover {
+  background-position: right;
+}
+
+  #play-button {
+    height: 63px;
+    border-radius: 5px;
+    padding: 1rem; 
+    font-weight: bold;
+    color: white;
+    width:130px;
+    cursor: pointer;
+    background-size: 200%;
+    background-image: linear-gradient(to left, #3498db, #e74c3c, #9b59b6 );
+    transition: 0.6s;
+  }
+
+  #play-button:hover {
+    background-position: right;
+  }
+
+a {
+  text-decoration: none;
+}
+
+
+
+/* need to add hover colors to buttons */

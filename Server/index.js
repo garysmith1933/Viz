@@ -8,6 +8,7 @@ app.use(express.json());
 
 //needed for heroku deploy
 app.use(express.static(path.join(__dirname, 'client/build')));
+app.use(express.static("public"))
 
 //using this to fix issue white gap issue for visualizer
 app.use(express.static(__dirname + '/public'));
