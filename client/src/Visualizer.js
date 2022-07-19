@@ -3,6 +3,7 @@ import Sketch from 'react-p5';
 import 'p5/lib/addons/p5.sound';
 import Instructions from './Instructions';
 import Box from '@mui/material/Box';
+import Animals from './Animals.mp3'
 
 //IMPORTANT: Each array has a length of 5, the order is treble, lowmid, mid, highmid, bass
 
@@ -103,7 +104,7 @@ const getCurrentSpeed = () => {
 };
 
 const Visualizer = () => {
-  const [audio, setAudio] = useState('');
+  const [audio, setAudio] = useState(Animals);
   const [currentSpeed, setCurrentSpeed] = useState(getCurrentSpeed());
   const [colorTheme, setColorTheme] = useState(0);
   const [songStatus, setSongStatus] = useState('Play');
@@ -243,7 +244,7 @@ const Visualizer = () => {
 
   //sets the currentSound to the audio
   const preload = () => {
-    currentSound = myp5.loadSound(audio);
+    currentSound = myp5.loadSound(audio)
     currentSound.setVolume(0.2)
   };
 
