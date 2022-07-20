@@ -310,7 +310,7 @@ const Visualizer = () => {
     myp5.resizeCanvas(myp5.windowWidth, myp5.windowHeight);
   };
 
-  //Pause / Play feature
+  //Pause / Play feature. Needs to be troubleshooted on chrome, but works perfectly on firefox 
   const mouseClicked = () => {
     if (currentSound.isPlaying()) {
       if (currentSound) {

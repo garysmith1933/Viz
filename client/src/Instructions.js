@@ -26,7 +26,7 @@ const Instructions = () => {
   return (
     <div style={{ padding: '1.5rem' }}>
       <div>
-        <Button onClick={handleOpen} style={{color: 'white'}}>Guide</Button>
+        <Button onClick={handleOpen} style={{color: 'white'}}>Click me for guide!</Button>
         <Modal
           aria-labelledby='transition-modal-title'
           aria-describedby='transition-modal-description'
@@ -44,6 +44,8 @@ const Instructions = () => {
                 What you need to know
               </Typography>
 
+              <Typography variant='h6' id='default' style={{marginTop: '1rem', color: '#8338ec'}}> Click the play button to try out Viz with our preloaded song! </Typography>
+
               {/* I believe this should be moved to either a tab in the navbar on maybe on the landing page somewhere, what do yall think? */}
               <Typography
                 id='instruction'
@@ -52,6 +54,8 @@ const Instructions = () => {
                 style={{ marginTop: '1rem' }}
               >
                 How does it work?
+                </Typography>
+
                 <Typography id='instruction-text' sx={{ mt: 2 }}>
                   When a song is playing the diamonds speed and size will vary
                   based on the freqency each diamond represent. The inner most
@@ -62,8 +66,7 @@ const Instructions = () => {
                   constantly varying as the song goes on! Try different songs
                   and see how the diamonds will react!
                 </Typography>
-              </Typography>
-
+              
               <Typography
                 id='instruction'
                 variant='h6'
@@ -82,8 +85,7 @@ const Instructions = () => {
                 Pressing the W key will rotate the direction of diamonds.
               </Typography>
               <Typography id='instruction-text' sx={{ mt: 2 }}>
-                Pressing the Enter key will cycle through our color palettes of
-                diamonds.
+                Pressing the Enter key will cycle through our color palettes.
               </Typography>
             </Box>
           </Fade>
