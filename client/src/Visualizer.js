@@ -154,9 +154,7 @@ const Visualizer = () => {
         p.vertex(0, -this.size);
         p.vertex(-this.size, 0);
         p.endShape(p.CLOSE);
-
-        //this is what it looks like if they were circles... yall want this as an option?
-        // p.circle(0,0,this.size)
+        
         p.pop();
       }
     }
@@ -171,11 +169,12 @@ const Visualizer = () => {
       const x = radiusOfCurrentDiamond * p.cos(angleOfCurrentDiamond);
       const y = radiusOfCurrentDiamond * p.sin(angleOfCurrentDiamond);
 
-      //for every 2 degrees moved place a diamond
-      for (let a = 0; a < p.radians(12); a += p.radians(2)) {
+      //for every 2 degrees moved place a diamond 
+      for (let newAngle = 0; newAngle < p.radians(12); newAngle += p.radians(2)) {
 
         //Makes diamonds instances
-        const diamond = new Diamond(x, y, a, sizes[current], p.color(paletteThemes[currentColorTheme].colors[current]), speeds[current], directions[current]);
+        const currentDiamondColor = paletteThemes[currentColorTheme].colors[current]
+        const diamond = new Diamond(x, y, newAngle, sizes[current], p.color(currentDiamondColor), speeds[current], directions[current]);
         //calls the draw method to make the diamonds
         diamond.draw();
       }
