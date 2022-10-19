@@ -26,7 +26,7 @@ const numOfDiamondSets = 5;
 //if its 1, it will go right, -1 it will go left.
 const directions = [-1, 1, -1, 1, -1];
 let windowWidth = myp5.windowWidth;
-let windowheight = myp5.windowHeight;
+let windowHeight = myp5.windowHeight;
 
 const topSpeeds = [
   //slowest
@@ -250,7 +250,7 @@ const Visualizer = () => {
 
   //if the window was set one way, this will readjust the drawing when it is changed.
   const windowResized = () => {
-    myp5.resizeCanvas(myp5.windowWidth, myp5.windowHeight);
+    myp5.resizeCanvas(windowWidth, windowHeight);
   };
 
   //Pause / Play feature. Needs to be troubleshooted on chrome, but works perfectly on firefox 
