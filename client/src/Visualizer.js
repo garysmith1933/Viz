@@ -4,6 +4,7 @@ import 'p5/lib/addons/p5.sound';
 import Instructions from './Instructions';
 import Box from '@mui/material/Box';
 import Animals from './Animals.mp3'
+import { paletteThemes } from './colors.js'
 
 //IMPORTANT: Each array has a length of 5, the order is treble, lowmid, mid, highmid, bass
 
@@ -15,72 +16,17 @@ const P5 = Object.getPrototypeOf(myp5).constructor;
 let currentSound;
 let fft;
 
-//color palette
-const colors = [
-  {
-    label: 'Default',
-    color: ['#ffbe0b', '#fb5607', '#ff006e', '#8338ec', '#3a86ff'],
-  },
+//determines the starting places of the diamonds
+let angles = [45, 55, 65, 75, 85];
 
-  {
-    label: 'Colorful and Balanced',
-    color: ['#E27D60', '#85DCB', '#E8A87C', '#C38D9E', '#41B3A3'],
-  },
-
-  {
-    label: 'Bright Accent Colors',
-    color: ['#242582', '#553D67', '#F64C72', '#99738E', '#2F2FA2'],
-  },
-
-  {
-    label: 'Natural and Earthy',
-    color: ['#8D8741', '#659DBD', '#DAAD86', '#BC986A', '#FBEEC1'],
-  },
-
-  {
-    label: 'Cheerful and Energetic',
-    color: ['#FBE8A6', '#F4976C', '#303C6C', '#B4DFE5', '#D2FDFF'],
-  },
-
-  {
-    label: 'Artsy and Creative',
-    color: ['#D79922', '#EFE2BA', '#F13C20', '#4056A1', '#C5CBE3'],
-  },
-
-  {
-    label: 'Clean and Energetic',
-    color: ['#5680E9', '#84CEEB', '#5AB9EA', '#C1C8E4', '#8860D0'],
-  },
-
-  {
-    label: 'Vibrant and Elegant',
-    color: ['#F8E9A1', '#F76C6C', '#A8D0E6', '#374785', '#24305E'],
-  },
-
-  {
-    label: 'Bright Pink and Pastels',
-    color: ['#A1C3D1', '#B39BC8', '#F0EBF4', '#F172A1', '#E64398'],
-  },
-  //Rich and Colorful
-  {
-    label: 'Rich and Colorful',
-    color: ['#F78888', '#F3D250', '#ECECEC', '#90CCF4', '#5DA2D5'],
-  },
-];
-
-//if you try to make this one variable, they will all move in unison, we dont want that.
-let angles = [45, 45, 45, 45, 45];
-let selectedSpeed = 2;
-
-// Circle's radius
 let radius = 100;
-//stretches out the placements of the circles
+//stretches out distance between diamonds
 const radiusMultiplier = [1, 1.5, 2, 2.5, 3];
-const numOfCircles = 5;
+const numOfDiamondSets = 5;
 //if its 1, it will go right, -1 it will go left.
 const directions = [-1, 1, -1, 1, -1];
 let windowWidth = myp5.windowWidth;
-let windowheight = myp5.windowHeight;
+let windowHeight = myp5.windowHeight;
 
 const topSpeeds = [
   //slowest
@@ -95,6 +41,7 @@ const topSpeeds = [
   [3.8, 1.4, 3.2, 2.8, 1.4],
 ];
 
+let selectedSpeed = 2;
 const getCurrentSpeed = () => {
   if (selectedSpeed === 0) return 'Slowest';
   if (selectedSpeed === 1) return 'Slower';
@@ -106,7 +53,7 @@ const getCurrentSpeed = () => {
 const Visualizer = () => {
   const [audio, setAudio] = useState(Animals);
   const [currentSpeed, setCurrentSpeed] = useState(getCurrentSpeed());
-  const [colorTheme, setColorTheme] = useState(0);
+  const [currentColorTheme, setCurrentColorTheme] = useState(0);
   const [songStatus, setSongStatus] = useState('Play');
 
   // function that is passed to the sketch component as a prop
@@ -116,7 +63,7 @@ const Visualizer = () => {
     p.frameRate(120);
   };
 
-  //function that is passed to the sketch component as a prop
+  //function that is passed to the sketch component as a prop, it also acts as a loop
   const draw = (p) => {
     //sets the background color of canvas
     p.background('#090909');
@@ -134,7 +81,7 @@ const Visualizer = () => {
     p.fill('white');
     p.textSize(12);
     p.text('Current Color Theme', windowWidth - 200, 12);
-    p.text(colors[colorTheme].label, windowWidth - 200, 40);
+    p.text(paletteThemes[currentColorTheme].label, windowWidth - 200, 40);
     p.pop();
 
     //moves canvas to center
@@ -152,15 +99,9 @@ const Visualizer = () => {
 
     //for rotation speed of diamonds
     const trebleSpeed = p.map(treble, 0, 255, 0.3, topSpeeds[selectedSpeed][0]);
-    //second slowest
     const lowMidSpeed = p.map(lowMid, 0, 255, 0.3, topSpeeds[selectedSpeed][1]);
     const midSpeed = p.map(mid, 0, 255, 0.3, topSpeeds[selectedSpeed][2]);
-    const highMidSpeed = p.map(
-      highMid,
-      0,
-      255,
-      0.3,
-      topSpeeds[selectedSpeed][3]
+    const highMidSpeed = p.map(highMid, 0, 255, 0.3, topSpeeds[selectedSpeed][3]
     );
     //slowest
     const bassSpeed = p.map(bass, 0, 255, 0.3, topSpeeds[selectedSpeed][4]);
@@ -186,9 +127,9 @@ const Visualizer = () => {
 
     //each diamond has a position based on x and y coordinates, and angle they are placed set at, and a size, color and speed that can vary.
     class Diamond {
-      constructor(x, y, a, size, color, speed) {
-        this.pos = p.createVector(x, y);
-        this.angle = a;
+      constructor(x, y, angle, size, color, speed) {
+        this.position = p.createVector(x, y);
+        this.angle = angle
         this.color = color;
         this.size = size;
         this.speed = speed;
@@ -199,7 +140,7 @@ const Visualizer = () => {
         //sets angle placed on circle, prevents other diamonds from being on top of each other
         p.rotate(this.angle);
         //moves to set position on circle, will be centered in canvas otherwise.
-        p.translate(this.pos.x, this.pos.y);
+        p.translate(this.position.x, this.position.y);
         //current color
         p.fill(this.color);
         //sets the outline of diamonds to black
@@ -220,25 +161,27 @@ const Visualizer = () => {
       }
     }
 
-    //sets the circle rings..that you cant see!
-    for (let j = 1; j <= numOfCircles; j++) {
+    //sets the Diamonds and their movement.
+    for (let j = 1; j <= numOfDiamondSets; j++) {
       let current = j - 1;
   
       //polar to cartesian coordinates, basically..this is where our diamond drawing will begin and how it moves around!
-      const x = radius * radiusMultiplier[current] * p.cos(angles[current]);
-      const y = radius * radiusMultiplier[current] * p.sin(angles[current]);
+      const radiusOfCurrentDiamond = radius * radiusMultiplier[current]
+      const angleOfCurrentDiamond = angles[current]
+      const x = radiusOfCurrentDiamond * p.cos(angleOfCurrentDiamond);
+      const y = radiusOfCurrentDiamond * p.sin(angleOfCurrentDiamond);
 
       //for every 2 degrees moved place a diamond
       for (let a = 0; a < p.radians(12); a += p.radians(2)) {
 
         //Makes diamonds instances
-        const diamond = new Diamond(x, y, a, sizes[current], p.color(colors[colorTheme].color[current]), speeds[current], directions[current]);
+        const diamond = new Diamond(x, y, a, sizes[current], p.color(paletteThemes[currentColorTheme].colors[current]), speeds[current], directions[current]);
         //calls the draw method to make the diamonds
-        diamond.draw(a);
+        diamond.draw();
       }
 
       //if the diamonds of the current circle being drawn have a direction of one, go one way, else go the other way
-      angles[j - 1] += directions[current] === 1 ? p.radians(speeds[current]) : p.radians(-speeds[current]);
+      angles[current] += directions[current] === 1 ? p.radians(speeds[current]) : p.radians(-speeds[current]);
     }
   };
 
@@ -295,19 +238,19 @@ const Visualizer = () => {
     // Cycles color palette by pressing enter key
     if (myp5.keyCode === 13) {
       //if we are on the last palette
-      if (colorTheme === 9) {
+      if (currentColorTheme === 9) {
         //reset the cycle
-        setColorTheme(0);
+        setCurrentColorTheme(0);
         return;
       }
-      setColorTheme(colorTheme + 1);
+      setCurrentColorTheme(currentColorTheme + 1);
     }
     return false;
   };
 
   //if the window was set one way, this will readjust the drawing when it is changed.
   const windowResized = () => {
-    myp5.resizeCanvas(myp5.windowWidth, myp5.windowHeight);
+    myp5.resizeCanvas(windowWidth, windowHeight);
   };
 
   //Pause / Play feature. Needs to be troubleshooted on chrome, but works perfectly on firefox 
