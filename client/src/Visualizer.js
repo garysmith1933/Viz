@@ -42,6 +42,7 @@ const speedSettings = [
 ];
 
 let selectedSpeed = 2;
+
 const getCurrentSpeed = () => {
   if (selectedSpeed === 0) return 'Slowest';
   if (selectedSpeed === 1) return 'Slower';
@@ -162,7 +163,7 @@ const Visualizer = () => {
       const x = radiusOfCurrentDiamond * p.cos(angleOfCurrentDiamond);
       const y = radiusOfCurrentDiamond * p.sin(angleOfCurrentDiamond);
 
-      //for every 2 degrees moved place a diamond 
+      //for every 2 degrees moved place a diamond, this creates the 3D look
       for (let newAngle = 0; newAngle < p.radians(12); newAngle += p.radians(2)) {
 
         //Makes diamonds instances
@@ -268,15 +269,7 @@ const Visualizer = () => {
    
       <div className='button-container'>
         <label id='music-upload-button'>
-          <input
-            id='musicInput'
-            type='file'
-            name='file'
-            accept='audio/*'
-            onChange={(event) => {
-              setAudio(event.target.files[0]);
-            }}
-          />
+          <input id='musicInput' type='file' name='file' accept='audio/*' onChange={(event) => setAudio(event.target.files[0])}/>
           Upload a track
         </label>
 
