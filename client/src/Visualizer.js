@@ -66,28 +66,6 @@ const Visualizer = () => {
 
   //function that is passed to the sketch component as a prop, it also acts as a loop
   const draw = (p) => {
-    //sets the background color of canvas
-    p.background('#090909');
-
-    //Tells the user the current speed setting when music is playing
-    p.push();
-    p.fill('white');
-    p.textSize(12);
-    p.text('Current Speed Setting', 100, 12);
-    p.text(currentSpeed, 100, 40);
-    p.pop();
-
-    //Tells the user the current color theme being used
-    p.push();
-    p.fill('white');
-    p.textSize(12);
-    p.text('Current Color Theme', windowWidth - 200, 12);
-    p.text(paletteThemes[currentColorTheme].label, windowWidth - 200, 40);
-    p.pop();
-
-    //moves canvas to center
-    p.translate(p.width / 2, p.height / 2);
-
     //each diamond has a position based on x and y coordinates, and angle they are placed set at, and a size, color and speed that can vary.
     class Diamond {
       constructor(x, y, angle, size, color, speed) {
@@ -122,6 +100,27 @@ const Visualizer = () => {
       }
     }
 
+    //sets the background color of canvas
+    p.background('#090909');
+
+    //Tells the user the current speed setting when music is playing
+    p.push();
+    p.fill('white');
+    p.textSize(12);
+    p.text('Current Speed Setting', 100, 12);
+    p.text(currentSpeed, 100, 40);
+    p.pop();
+
+    //Tells the user the current color theme being used
+    p.push();
+    p.fill('white');
+    p.textSize(12);
+    p.text('Current Color Theme', windowWidth - 200, 12);
+    p.text(paletteThemes[currentColorTheme].label, windowWidth - 200, 40);
+    p.pop();
+
+    //moves canvas to center
+    p.translate(p.width / 2, p.height / 2);
 
     // This is what catches the pitches
     fft.analyze();
