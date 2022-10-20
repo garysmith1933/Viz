@@ -66,6 +66,40 @@ const Visualizer = () => {
 
   //function that is passed to the sketch component as a prop, it also acts as a loop
   const draw = (p) => {
+    //each diamond has a position based on x and y coordinates, and angle they are placed set at, and a size, color and speed that can vary.
+    class Diamond {
+      constructor(x, y, angle, size, color, speed) {
+        this.position = p.createVector(x, y);
+        this.angle = angle
+        this.color = color;
+        this.size = size;
+        this.speed = speed;
+      }
+
+      drawDiamond() {
+        p.push();
+        //sets angle placed on circle, prevents other diamonds from being on top of each other
+        p.rotate(this.angle);
+        //moves to set position on circle, will be centered in canvas otherwise.
+        p.translate(this.position.x, this.position.y);
+        //current color
+        p.fill(this.color);
+        //sets the outline of diamonds to black
+        p.stroke(0);
+        //gives the black outline
+        p.strokeWeight(1);
+        //draws the diamond shape depending on the size passed when new instance was created.
+        p.beginShape();
+        p.vertex(0, this.size);
+        p.vertex(this.size, 0);
+        p.vertex(0, -this.size);
+        p.vertex(-this.size, 0);
+        p.endShape(p.CLOSE);
+        
+        p.pop();
+      }
+    }
+
     //sets the background color of canvas
     p.background('#090909');
 
@@ -117,41 +151,9 @@ const Visualizer = () => {
     const speeds = [trebleSpeed,lowMidSpeed,midSpeed,highMidSpeed,bassSpeed];
     //array of sizes
     const sizes = [sizeTreble, sizeLowMid, sizeMid, sizeHighMid, sizeBass];
-    
 
-    //each diamond has a position based on x and y coordinates, and angle they are placed set at, and a size, color and speed that can vary.
-    class Diamond {
-      constructor(x, y, angle, size, color, speed) {
-        this.position = p.createVector(x, y);
-        this.angle = angle
-        this.color = color;
-        this.size = size;
-        this.speed = speed;
-      }
 
-      draw() {
-        p.push();
-        //sets angle placed on circle, prevents other diamonds from being on top of each other
-        p.rotate(this.angle);
-        //moves to set position on circle, will be centered in canvas otherwise.
-        p.translate(this.position.x, this.position.y);
-        //current color
-        p.fill(this.color);
-        //sets the outline of diamonds to black
-        p.stroke(0);
-        //gives the black outline
-        p.strokeWeight(1);
-        //draws the diamond shape depending on the size passed when new instance was created.
-        p.beginShape();
-        p.vertex(0, this.size);
-        p.vertex(this.size, 0);
-        p.vertex(0, -this.size);
-        p.vertex(-this.size, 0);
-        p.endShape(p.CLOSE);
-        
-        p.pop();
-      }
-    }
+
 
     //sets the Diamonds and their movement.
     for (let j = 1; j <= numOfDiamondSets; j++) {
@@ -163,14 +165,14 @@ const Visualizer = () => {
       const x = radiusOfCurrentDiamond * p.cos(angleOfCurrentDiamond);
       const y = radiusOfCurrentDiamond * p.sin(angleOfCurrentDiamond);
 
-      //for every 2 degrees moved place a diamond, this creates the 3D look
+      //for every 2 degrees moved place a diamond, this creates the 3D looks
       for (let newAngle = 0; newAngle < p.radians(12); newAngle += p.radians(2)) {
 
         //Makes diamonds instances
         const currentDiamondColor = paletteThemes[currentColorTheme].colors[current]
         const diamond = new Diamond(x, y, newAngle, sizes[current], p.color(currentDiamondColor), speeds[current], directions[current]);
         //calls the draw method to make the diamonds
-        diamond.draw();
+        diamond.drawDiamond();
       }
 
       //if the diamonds of the current circle being drawn have a direction of one, go one way, else go the other way
