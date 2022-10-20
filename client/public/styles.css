@@ -1,50 +1,47 @@
 
 .bg-black {
     background-color:#090909;
-  }
-
-  #musicInput {
-    display: none;
-  }
-
-#music-upload-button {
-    display: flex;
-    align-items: center;
-    border-radius: 5px;
-    padding: 0.8rem;
-    color: white;
-    font-weight: bold;
-    cursor: pointer;
-    background-size: 200%;
-    background-image: linear-gradient(to left, #FFC312, #EE5A24, #FFC312 );
-    transition: 0.6s;
 }
 
-#music-upload-button:hover {
+#musicInput {
+  display: none;
+}
+
+.button-container {
+  display:flex;
+  justify-content: space-evenly;
+  align-items: center;
+  background-color: #090909;
+}
+
+#music-upload-button, #play-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 5px;
+  padding: 0.8rem;
+  color: white;
+  font-size: 0.9rem;
+  font-weight: bold;
+  cursor: pointer;
+  background-size: 200%;
+  transition: 0.6s;
+  width: 100px;
+  height: 25px;
+}
+
+#music-upload-button {
+    background-image: linear-gradient(to left, #FFC312, #EE5A24, #FFC312 );
+}
+
+#music-upload-button:hover,#play-button:hover {
   background-position: right;
 }
 
-  #play-button {
-    height: 63px;
-    border-radius: 5px;
-    padding: 1rem; 
-    font-weight: bold;
-    color: white;
-    width:130px;
-    cursor: pointer;
-    background-size: 200%;
-    background-image: linear-gradient(to left, #3498db, #e74c3c, #9b59b6 );
-    transition: 0.6s;
-  }
-
-  #play-button:hover {
-    background-position: right;
-  }
+#play-button {
+  background-image: linear-gradient(to left, #3498db, #e74c3c, #9b59b6 ); 
+}
 
 a {
   text-decoration: none;
 }
-
-
-
-/* need to add hover colors to buttons */

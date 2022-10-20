@@ -28,7 +28,7 @@ const directions = [-1, 1, -1, 1, -1];
 let windowWidth = myp5.windowWidth;
 let windowHeight = myp5.windowHeight;
 
-const topSpeeds = [
+const speedSettings = [
   //slowest
   [1.4, 0.6, 0.8, 1, 0.6],
   //slower
@@ -72,7 +72,7 @@ const Visualizer = () => {
     p.push();
     p.fill('white');
     p.textSize(12);
-    p.text('Current Max Speed Setting', 100, 12);
+    p.text('Current Speed Setting', 100, 12);
     p.text(currentSpeed, 100, 40);
     p.pop();
 
@@ -98,23 +98,13 @@ const Visualizer = () => {
     const bass = fft.getEnergy('bass');
 
     //for rotation speed of diamonds
-    const trebleSpeed = p.map(treble, 0, 255, 0.3, topSpeeds[selectedSpeed][0]);
-    const lowMidSpeed = p.map(lowMid, 0, 255, 0.3, topSpeeds[selectedSpeed][1]);
-    const midSpeed = p.map(mid, 0, 255, 0.3, topSpeeds[selectedSpeed][2]);
-    const highMidSpeed = p.map(highMid, 0, 255, 0.3, topSpeeds[selectedSpeed][3]
-    );
-    //slowest
-    const bassSpeed = p.map(bass, 0, 255, 0.3, topSpeeds[selectedSpeed][4]);
+    const trebleSpeed = p.map(treble, 0, 255, 0.3, speedSettings[selectedSpeed][0]);
+    const lowMidSpeed = p.map(lowMid, 0, 255, 0.3, speedSettings[selectedSpeed][1]);
+    const midSpeed = p.map(mid, 0, 255, 0.3, speedSettings[selectedSpeed][2]);
+    const highMidSpeed = p.map(highMid, 0, 255, 0.3, speedSettings[selectedSpeed][3]);
+    const bassSpeed = p.map(bass, 0, 255, 0.3, speedSettings[selectedSpeed][4]);
 
-    //array of speeds
-    const speeds = [
-      trebleSpeed,
-      lowMidSpeed,
-      midSpeed,
-      highMidSpeed,
-      bassSpeed,
-    ];
-
+  
     //takes the volume of the frequencies and sets them the size of a variable
     const sizeTreble = p.map(treble, 0, 255, 15, 45);
     const sizeLowMid = p.map(lowMid, 0, 255, 15, 60);
@@ -122,8 +112,11 @@ const Visualizer = () => {
     const sizeHighMid = p.map(highMid, 0, 255, 15, 45);
     const sizeBass = p.map(bass, 0, 255, 15, 60);
 
-    //then we shove it in this array
+    //array of speeds
+    const speeds = [trebleSpeed,lowMidSpeed,midSpeed,highMidSpeed,bassSpeed];
+    //array of sizes
     const sizes = [sizeTreble, sizeLowMid, sizeMid, sizeHighMid, sizeBass];
+    
 
     //each diamond has a position based on x and y coordinates, and angle they are placed set at, and a size, color and speed that can vary.
     class Diamond {
@@ -267,27 +260,13 @@ const Visualizer = () => {
 
   return (
     <>
-      <Box
-        sx={{
-          display: 'flex',
-          justifyContent: 'center',
-          width: '100%',
-        }}
-      >
+      <Box sx={{display: 'flex',justifyContent: 'center', width: '100%',}}>
         <Instructions />
       </Box>
 
-      <div style={{ display: 'flex', justifyContent: 'center' }}>
-        <Sketch
-          setup={setup}
-          draw={draw}
-          preload={preload}
-          windowResized={windowResized}
-          keyPressed={keyPresses}
-        />
-      </div>
-
-      <div style={{ display: 'flex', justifyContent: 'space-evenly', backgroundColor: '#090909' }}>
+      <Sketch setup={setup} draw={draw} preload={preload} windowResized={windowResized} keyPressed={keyPresses}/>
+   
+      <div className='button-container'>
         <label id='music-upload-button'>
           <input
             id='musicInput'
@@ -301,9 +280,9 @@ const Visualizer = () => {
           Upload a track
         </label>
 
-        <button id='play-button' onClick={mouseClicked}>
+        <div id='play-button' onClick={mouseClicked}>
             {songStatus}
-        </button>
+        </div>
       </div>
     </>
   );
