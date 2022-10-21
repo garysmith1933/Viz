@@ -10,21 +10,10 @@ import { paletteThemes } from './colors.js'
 
 // react-p5 has this so we can use p5 methods outside of draw, and set up.
 const myp5 = new window.p5();
-//to get access to the fft function in setup, I needed to get the prototype of this instance of P5 constructor, dont ask me why.
+//to get access to the fft function in setup, I needed to get the prototype of this instance of P5 constructor
 const P5 = Object.getPrototypeOf(myp5).constructor;
-
 let currentSound;
 let fft;
-
-//determines the starting places of the diamonds
-let angles = [45, 55, 65, 75, 85];
-
-let radius = 100;
-//stretches out distance between diamonds
-const radiusMultiplier = [1, 1.5, 2, 2.5, 3];
-const numOfDiamondSets = 5;
-//if its 1, it will go right, -1 it will go left.
-const directions = [-1, 1, -1, 1, -1];
 let windowWidth = myp5.windowWidth;
 let windowHeight = myp5.windowHeight;
 
@@ -43,6 +32,7 @@ const speedSettings = [
 
 let selectedSpeed = 2;
 
+//function that returns current speed to be displayed in the sketch
 const getCurrentSpeed = () => {
   if (selectedSpeed === 0) return 'Slowest';
   if (selectedSpeed === 1) return 'Slower';
@@ -51,76 +41,80 @@ const getCurrentSpeed = () => {
   if (selectedSpeed === 4) return 'Fastest';
 };
 
+//Used to set direction of each set of diamonds, if its 1, it will go right, -1 it will go left.
+const diamondRotations = [-1, 1, -1, 1, -1];
+ //determines the starting places of the diamonds
+let angles = [45, 55, 65, 75, 85];
+
 const Visualizer = () => {
   const [audio, setAudio] = useState(Animals);
   const [currentSpeed, setCurrentSpeed] = useState(getCurrentSpeed());
   const [currentColorTheme, setCurrentColorTheme] = useState(0);
   const [songStatus, setSongStatus] = useState('Play');
 
-  // function that is passed to the sketch component as a prop
-  const setup = (p, canvasParentRef) => {
-    p.createCanvas(windowWidth, 800).parent(canvasParentRef);
+  // function that is passed to the sketch component as a prop to draw the canvas
+  const setup = (p5, canvasParentRef) => {
+    //without this, the entire sketch will not render
+    p5.createCanvas(windowWidth, 800).parent(canvasParentRef);
     fft = new P5.FFT();
-    p.frameRate(120);
+    p5.frameRate(120);
   };
 
-  //function that is passed to the sketch component as a prop, it also acts as a loop
-  const draw = (p) => {
-    //each diamond has a position based on x and y coordinates, and angle they are placed set at, and a size, color and speed that can vary.
+  //function that is passed to the sketch component as a prop, it also acts as a loop, continously being drawn.
+  const draw = (p5) => {
+    //each diamond has a position based on cartesian coordinates (x,y), an angle they are rotated at, its current size, and its current color
     class Diamond {
-      constructor(x, y, angle, size, color, speed) {
-        this.position = p.createVector(x, y);
-        this.angle = angle
-        this.color = color;
+      constructor(x, y, angle, size, color) {
+        this.position = p5.createVector(x, y);
+        this.angle = angle;
         this.size = size;
-        this.speed = speed;
+        this.color = color;
       }
 
       drawDiamond() {
-        p.push();
-        //sets angle placed on circle, prevents other diamonds from being on top of each other
-        p.rotate(this.angle);
-        //moves to set position on circle, will be centered in canvas otherwise.
-        p.translate(this.position.x, this.position.y);
-        //current color
-        p.fill(this.color);
+        p5.push();
+        //sets angle prevents other diamonds from being on top of each other
+        p5.rotate(this.angle);
+        //moves to position based on cartesian coordinate
+        p5.translate(this.position.x, this.position.y);
+        //gives the diamond its color
+        p5.fill(this.color);
         //sets the outline of diamonds to black
-        p.stroke(0);
-        //gives the black outline
-        p.strokeWeight(1);
+        p5.stroke(0);
+
         //draws the diamond shape depending on the size passed when new instance was created.
-        p.beginShape();
-        p.vertex(0, this.size);
-        p.vertex(this.size, 0);
-        p.vertex(0, -this.size);
-        p.vertex(-this.size, 0);
-        p.endShape(p.CLOSE);
-        
-        p.pop();
+        p5.beginShape();
+        p5.vertex(0, this.size);
+        p5.vertex(this.size, 0);
+        p5.vertex(0, -this.size);
+        p5.vertex(-this.size, 0);
+        p5.endShape(p5.CLOSE);
+
+        p5.pop();
       }
     }
 
     //sets the background color of canvas
-    p.background('#090909');
+    p5.background('#090909');
 
     //Tells the user the current speed setting when music is playing
-    p.push();
-    p.fill('white');
-    p.textSize(12);
-    p.text('Current Speed Setting', 100, 12);
-    p.text(currentSpeed, 100, 40);
-    p.pop();
+    p5.push();
+    p5.fill('white');
+    p5.textSize(12);
+    p5.text('Current Speed Setting', 100, 12);
+    p5.text(currentSpeed, 100, 40);
+    p5.pop();
 
     //Tells the user the current color theme being used
-    p.push();
-    p.fill('white');
-    p.textSize(12);
-    p.text('Current Color Theme', windowWidth - 200, 12);
-    p.text(paletteThemes[currentColorTheme].label, windowWidth - 200, 40);
-    p.pop();
+    p5.push();
+    p5.fill('white');
+    p5.textSize(12);
+    p5.text('Current Color Theme', windowWidth - 200, 12);
+    p5.text(paletteThemes[currentColorTheme].label, windowWidth - 200, 40);
+    p5.pop();
 
     //moves canvas to center
-    p.translate(p.width / 2, p.height / 2);
+    p5.translate(p5.width / 2, p5.height / 2);
 
     // This is what catches the pitches
     fft.analyze();
@@ -132,51 +126,50 @@ const Visualizer = () => {
     const highMid = fft.getEnergy('highMid');
     const bass = fft.getEnergy('bass');
 
-    //for rotation speed of diamonds
-    const trebleSpeed = p.map(treble, 0, 255, 0.3, speedSettings[selectedSpeed][0]);
-    const lowMidSpeed = p.map(lowMid, 0, 255, 0.3, speedSettings[selectedSpeed][1]);
-    const midSpeed = p.map(mid, 0, 255, 0.3, speedSettings[selectedSpeed][2]);
-    const highMidSpeed = p.map(highMid, 0, 255, 0.3, speedSettings[selectedSpeed][3]);
-    const bassSpeed = p.map(bass, 0, 255, 0.3, speedSettings[selectedSpeed][4]);
-
-  
-    //takes the volume of the frequencies and sets them the size of a variable
-    const sizeTreble = p.map(treble, 0, 255, 15, 45);
-    const sizeLowMid = p.map(lowMid, 0, 255, 15, 60);
-    const sizeMid = p.map(mid, 0, 255, 15, 45);
-    const sizeHighMid = p.map(highMid, 0, 255, 15, 45);
-    const sizeBass = p.map(bass, 0, 255, 15, 60);
+    //for rotation speed of diamonds, it reads this value, that has a range of 0 to 255 will now have a range of 0.3 to the index in the array of the current speed setting
+    const trebleSpeed = p5.map(treble, 0, 255, 0.3, speedSettings[selectedSpeed][0]);
+    const lowMidSpeed = p5.map(lowMid, 0, 255, 0.3, speedSettings[selectedSpeed][1]);
+    const midSpeed = p5.map(mid, 0, 255, 0.3, speedSettings[selectedSpeed][2]);
+    const highMidSpeed = p5.map(highMid, 0, 255, 0.3, speedSettings[selectedSpeed][3]);
+    const bassSpeed = p5.map(bass, 0, 255, 0.3, speedSettings[selectedSpeed][4]);
 
     //array of speeds
-    const speeds = [trebleSpeed,lowMidSpeed,midSpeed,highMidSpeed,bassSpeed];
+    const currentSpeeds = [trebleSpeed,lowMidSpeed,midSpeed,highMidSpeed,bassSpeed];
+
+    //takes the volume of the frequencies and sets them the size of a variable, this value that has a range of 0 to 255 will now have a range of 15 to 45 or 60.
+    const sizeTreble = p5.map(treble, 0, 255, 15, 45);
+    const sizeLowMid = p5.map(lowMid, 0, 255, 15, 60);
+    const sizeMid = p5.map(mid, 0, 255, 15, 45);
+    const sizeHighMid = p5.map(highMid, 0, 255, 15, 45);
+    const sizeBass = p5.map(bass, 0, 255, 15, 60);
+
     //array of sizes
     const sizes = [sizeTreble, sizeLowMid, sizeMid, sizeHighMid, sizeBass];
 
-
-
-
+    const numOfDiamondSets = 5;
     //sets the Diamonds and their movement.
-    for (let j = 1; j <= numOfDiamondSets; j++) {
-      let current = j - 1;
-  
+    for (let j = 0; j < numOfDiamondSets; j++) {
+      let current = j
+    
+      //stretches out distance between diamonds, if they were all the same they will overlap each other
+      const radiusOfDiamonds = [100, 150, 200, 250, 300]
+      
       //polar to cartesian coordinates, basically..this is where our diamond drawing will begin and how it moves around!
-      const radiusOfCurrentDiamond = radius * radiusMultiplier[current]
+      const radiusOfCurrentDiamond = radiusOfDiamonds[current]
       const angleOfCurrentDiamond = angles[current]
-      const x = radiusOfCurrentDiamond * p.cos(angleOfCurrentDiamond);
-      const y = radiusOfCurrentDiamond * p.sin(angleOfCurrentDiamond);
+      const x = radiusOfCurrentDiamond * p5.cos(angleOfCurrentDiamond);
+      const y = radiusOfCurrentDiamond * p5.sin(angleOfCurrentDiamond);
 
-      //for every 2 degrees moved place a diamond, this creates the 3D looks
-      for (let newAngle = 0; newAngle < p.radians(12); newAngle += p.radians(2)) {
-
-        //Makes diamonds instances
+      //for every 2 degrees moved place a diamond, this creates the 3D look of each of the diamonds
+      for (let rotateAngle = 0; rotateAngle < p5.radians(12); rotateAngle += p5.radians(2)) {
         const currentDiamondColor = paletteThemes[currentColorTheme].colors[current]
-        const diamond = new Diamond(x, y, newAngle, sizes[current], p.color(currentDiamondColor), speeds[current], directions[current]);
+        const diamond = new Diamond(x, y, rotateAngle, sizes[current], p5.color(currentDiamondColor));
         //calls the draw method to make the diamonds
         diamond.drawDiamond();
       }
 
-      //if the diamonds of the current circle being drawn have a direction of one, go one way, else go the other way
-      angles[current] += directions[current] === 1 ? p.radians(speeds[current]) : p.radians(-speeds[current]);
+      //this is what causes the diamonds to move. Since we know its either 1 or -1
+      angles[current] += diamondRotations[current] === 1 ? p5.radians(currentSpeeds[current]) : p5.radians(-currentSpeeds[current]);
     }
   };
 
@@ -225,8 +218,8 @@ const Visualizer = () => {
 
     //Reverses direction on W key, at the moment
     if (myp5.keyCode === 87) {
-      for (let i = 0; i < directions.length; i++) {
-        directions[i] *= -1;
+      for (let i = 0; i < diamondRotations.length; i++) {
+        diamondRotations[i] *= -1;
       }
     }
 
@@ -266,7 +259,7 @@ const Visualizer = () => {
       <Box sx={{display: 'flex',justifyContent: 'center', width: '100%',}}>
         <Instructions />
       </Box>
-
+      
       <Sketch setup={setup} draw={draw} preload={preload} windowResized={windowResized} keyPressed={keyPresses}/>
    
       <div className='button-container'>
