@@ -151,12 +151,11 @@ const Visualizer = () => {
     for (let j = 1; j <= numOfDiamondSets; j++) {
       let current = j - 1;
     
-      let radius = 100;
-      //stretches out distance between diamonds
-      const radiusMultiplier = [1, 1.5, 2, 2.5, 3];
+      //stretches out distance between diamonds, if they were all the same they will overlap each other
+      const radiusOfDiamonds = [100, 150, 200, 250, 300]
       
       //polar to cartesian coordinates, basically..this is where our diamond drawing will begin and how it moves around!
-      const radiusOfCurrentDiamond = radius * radiusMultiplier[current]
+      const radiusOfCurrentDiamond = radiusOfDiamonds[current]
       const angleOfCurrentDiamond = angles[current]
       const x = radiusOfCurrentDiamond * p.cos(angleOfCurrentDiamond);
       const y = radiusOfCurrentDiamond * p.sin(angleOfCurrentDiamond);
