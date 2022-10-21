@@ -62,7 +62,7 @@ const Visualizer = () => {
 
   //function that is passed to the sketch component as a prop, it also acts as a loop, continously being drawn.
   const draw = (p5) => {
-    //each diamond has a position based on cartesian coordinates (x,y), an angle they are placed at, its current size, and its current color
+    //each diamond has a position based on cartesian coordinates (x,y), an angle they are rotated at, its current size, and its current color
     class Diamond {
       constructor(x, y, angle, size, color) {
         this.position = p5.createVector(x, y);
@@ -259,7 +259,7 @@ const Visualizer = () => {
       <Box sx={{display: 'flex',justifyContent: 'center', width: '100%',}}>
         <Instructions />
       </Box>
-
+      
       <Sketch setup={setup} draw={draw} preload={preload} windowResized={windowResized} keyPressed={keyPresses}/>
    
       <div className='button-container'>
