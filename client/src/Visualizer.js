@@ -73,9 +73,9 @@ const Visualizer = () => {
 
       drawDiamond() {
         p5.push();
-        //sets angle placed on circle, prevents other diamonds from being on top of each other
+        //sets angle prevents other diamonds from being on top of each other
         p5.rotate(this.angle);
-        //moves to set position on circle, will be centered in canvas otherwise.
+        //moves to position based on cartesian coordinate
         p5.translate(this.position.x, this.position.y);
         //gives the diamond its color
         p5.fill(this.color);
@@ -161,9 +161,9 @@ const Visualizer = () => {
       const y = radiusOfCurrentDiamond * p5.sin(angleOfCurrentDiamond);
 
       //for every 2 degrees moved place a diamond, this creates the 3D look of each of the diamonds
-      for (let newAngle = 0; newAngle < p5.radians(12); newAngle += p5.radians(2)) {
+      for (let rotateAngle = 0; rotateAngle < p5.radians(12); rotateAngle += p5.radians(2)) {
         const currentDiamondColor = paletteThemes[currentColorTheme].colors[current]
-        const diamond = new Diamond(x, y, newAngle, sizes[current], p5.color(currentDiamondColor));
+        const diamond = new Diamond(x, y, rotateAngle, sizes[current], p5.color(currentDiamondColor));
         //calls the draw method to make the diamonds
         diamond.drawDiamond();
       }
