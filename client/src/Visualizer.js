@@ -126,7 +126,7 @@ const Visualizer = () => {
     const highMid = fft.getEnergy('highMid');
     const bass = fft.getEnergy('bass');
 
-    //for rotation speed of diamonds
+    //for rotation speed of diamonds, it reads this value, that has a range of 0 to 255 will now have a range of 0.3 to the index in the array of the current speed setting
     const trebleSpeed = p5.map(treble, 0, 255, 0.3, speedSettings[selectedSpeed][0]);
     const lowMidSpeed = p5.map(lowMid, 0, 255, 0.3, speedSettings[selectedSpeed][1]);
     const midSpeed = p5.map(mid, 0, 255, 0.3, speedSettings[selectedSpeed][2]);
@@ -136,7 +136,7 @@ const Visualizer = () => {
     //array of speeds
     const currentSpeeds = [trebleSpeed,lowMidSpeed,midSpeed,highMidSpeed,bassSpeed];
 
-    //takes the volume of the frequencies and sets them the size of a variable
+    //takes the volume of the frequencies and sets them the size of a variable, this value that has a range of 0 to 255 will now have a range of 15 to 45 or 60.
     const sizeTreble = p5.map(treble, 0, 255, 15, 45);
     const sizeLowMid = p5.map(lowMid, 0, 255, 15, 60);
     const sizeMid = p5.map(mid, 0, 255, 15, 45);
