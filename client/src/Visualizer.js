@@ -148,8 +148,8 @@ const Visualizer = () => {
 
     const numOfDiamondSets = 5;
     //sets the Diamonds and their movement.
-    for (let j = 1; j <= numOfDiamondSets; j++) {
-      let current = j - 1;
+    for (let j = 0; j < numOfDiamondSets; j++) {
+      let current = j
     
       //stretches out distance between diamonds, if they were all the same they will overlap each other
       const radiusOfDiamonds = [100, 150, 200, 250, 300]
