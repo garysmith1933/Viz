@@ -42,7 +42,7 @@ const getCurrentSpeed = () => {
 };
 
 //Used to set direction of each set of diamonds, if its 1, it will go right, -1 it will go left.
-const directions = [-1, 1, -1, 1, -1];
+const diamondRotations = [-1, 1, -1, 1, -1];
  //determines the starting places of the diamonds
 let angles = [45, 55, 65, 75, 85];
 
@@ -169,7 +169,7 @@ const Visualizer = () => {
       }
 
       //this is what causes the diamonds to move. Since we know its either 1 or -1
-      angles[current] += directions[current] === 1 ? p5.radians(currentSpeeds[current]) : p5.radians(-currentSpeeds[current]);
+      angles[current] += diamondRotations[current] === 1 ? p5.radians(currentSpeeds[current]) : p5.radians(-currentSpeeds[current]);
     }
   };
 
@@ -218,8 +218,8 @@ const Visualizer = () => {
 
     //Reverses direction on W key, at the moment
     if (myp5.keyCode === 87) {
-      for (let i = 0; i < directions.length; i++) {
-        directions[i] *= -1;
+      for (let i = 0; i < diamondRotations.length; i++) {
+        diamondRotations[i] *= -1;
       }
     }
 
