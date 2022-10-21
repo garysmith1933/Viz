@@ -3,8 +3,8 @@ import Sketch from 'react-p5';
 import 'p5/lib/addons/p5.sound';
 import Instructions from './Instructions';
 import Box from '@mui/material/Box';
-import Animals from './Animals.mp3'
-import { paletteThemes } from './colors.js'
+import Animals from './Animals.mp3';
+import { paletteThemes } from './colors.js';
 
 //IMPORTANT: Each array has a length of 5, the order is treble, lowmid, mid, highmid, bass
 
