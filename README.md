@@ -3,7 +3,7 @@ An intereactive 3D audio visualizer for users to enjoy their favorite songs!
 
 **Link to project:** https://viz.onrender.com
 
-![Screenshot](./client/src/assets/portfolio.png)
+![Screenshot](./client/src/assets/Viz.png)
 
 ## How It's Made:
 
