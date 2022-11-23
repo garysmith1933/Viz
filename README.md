@@ -1,24 +1,15 @@
-# CAPSTONE
+# Viz
+An intereactive 3D audio visualizer for users to enjoy their favorite songs!
 
-You need the following to run locally in an .env file in the root
+**Link to project:** https://viz.onrender.com
 
-```
-JWT="*********************************"
-ORIGIN="******************************"
-AWS_ACCESS_KEY_ID = "*****************"
-AWS_SECRET_ACCESS_KEY = "*************"
-DATABASE_URL = "**********************"
-GOOGLE_SECRET = "*********************"
-GOOGLE_REDIRECT = "*******************"
-GOOGLE_CLIENT_ID = "******************"
-GOOGLE_SERVER_ENDPOINT = "************"
-GOOGLE_TOKEN_URL = "******************"
-```
+![Screenshot](./client/src/assets/portfolio.png)
 
-### Create Postgresql db
+## How It's Made:
 
-```
-psql
-CREATE DATABASE capstone;
-\l
-```
+**Tech used:** React, Node, Express, P5.js, P5.sound.js
+
+To be updated!
+
+## Lessons Learned:
+To be updated!
